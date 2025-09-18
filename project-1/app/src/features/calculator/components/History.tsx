@@ -38,9 +38,9 @@ const History: React.FC<HistoryProps> = ({ history, onHistoryClick }) => {
           {history.map((item, index) => (
             <ListItem
               key={index}
-              button // Makes the ListItem clickable
+              component="button"
               onClick={() => onHistoryClick(extractResult(item))}
-              sx={{ justifyContent: 'flex-end' }}
+              sx={{ justifyContent: 'flex-end', textAlign: 'right' }}
             >
               <ListItemText primary={item} sx={{ textAlign: 'right' }} />
             </ListItem>

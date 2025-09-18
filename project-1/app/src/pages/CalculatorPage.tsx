@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Paper, Grid, Typography } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import Display from '../features/calculator/components/Display';
 import Keypad from '../features/calculator/components/Keypad';
 import History from '../features/calculator/components/History';

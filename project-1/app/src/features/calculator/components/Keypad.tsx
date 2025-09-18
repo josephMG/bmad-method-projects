@@ -89,7 +89,7 @@ const Keypad: React.FC<KeypadProps> = ({ onButtonClick, onClearClick, onOperator
   return (
     <Grid container spacing={1} justifyContent="center">
       {buttons.map((button) => (
-        <Grid item key={button.label} size={button.xs}> 
+        <Grid key={button.label} size={button.xs}> 
           <Button
             variant="contained"
             disabled={button.type === 'empty'} // Disable empty buttons
