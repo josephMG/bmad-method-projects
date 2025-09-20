@@ -1,9 +1,11 @@
 import Foundation
+import Combine
 
-class CalculatorPresenter: CalculatorPresenterProtocol {
-    weak var view: CalculatorViewProtocol?
+class CalculatorPresenter: ObservableObject, CalculatorPresenterProtocol {
     var interactor: CalculatorInteractorInputProtocol?
     var router: CalculatorRouterProtocol?
+
+    @Published var displayText = "0"
 
     func viewDidLoad() {
         // Initial setup
@@ -40,10 +42,10 @@ class CalculatorPresenter: CalculatorPresenterProtocol {
 
 extension CalculatorPresenter: CalculatorInteractorOutputProtocol {
     func didUpdateDisplayValue(_ value: String) {
-        view?.updateDisplay(with: value)
+        displayText = value
     }
 
     func didEncounterError(_ error: String) {
-        view?.updateDisplay(with: error)
+        displayText = error
     }
 }

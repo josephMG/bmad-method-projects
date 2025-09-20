@@ -5,22 +5,18 @@ class CalculatorPresenterTests: XCTestCase {
 
     var presenter: CalculatorPresenter!
     var interactorMock: CalculatorInteractorMock!
-    var viewMock: CalculatorViewMock!
 
     override func setUp() {
         super.setUp()
         presenter = CalculatorPresenter()
         interactorMock = CalculatorInteractorMock()
-        viewMock = CalculatorViewMock()
         
         presenter.interactor = interactorMock
-        presenter.view = viewMock
     }
 
     override func tearDown() {
         presenter = nil
         interactorMock = nil
-        viewMock = nil
         super.tearDown()
     }
 
@@ -38,14 +34,12 @@ class CalculatorPresenterTests: XCTestCase {
     
     func testDidUpdateDisplayValue() {
         presenter.didUpdateDisplayValue("123.45")
-        XCTAssertTrue(viewMock.updateDisplayCalled)
-        XCTAssertEqual(viewMock.lastDisplayText, "123.45")
+        XCTAssertEqual(presenter.displayText, "123.45")
     }
     
     func testDidEncounterError() {
         presenter.didEncounterError("Test Error")
-        XCTAssertTrue(viewMock.updateDisplayCalled)
-        XCTAssertEqual(viewMock.lastDisplayText, "Test Error")
+        XCTAssertEqual(presenter.displayText, "Test Error")
     }
 }
 
@@ -73,15 +67,4 @@ class CalculatorInteractorMock: CalculatorInteractorInputProtocol {
     func processDecimal() {}
     func processSign() {}
     func processPercent() {}
-}
-
-class CalculatorViewMock: CalculatorViewProtocol {
-    var presenter: CalculatorPresenterProtocol?
-    
-    var updateDisplayCalled = false
-    var lastDisplayText: String?
-    func updateDisplay(with text: String) {
-        updateDisplayCalled = true
-        lastDisplayText = text
-    }
 }

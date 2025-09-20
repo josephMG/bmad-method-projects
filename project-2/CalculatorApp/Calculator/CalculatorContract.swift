@@ -1,18 +1,13 @@
 import SwiftUI
-
-// MARK: - View Protocol
-protocol CalculatorViewProtocol: AnyObject {
-    var presenter: CalculatorPresenterProtocol? { get set }
-    
-    // Presenter -> View
-    func updateDisplay(with text: String)
-}
+import Combine
+import UIKit
 
 // MARK: - Presenter Protocol
-protocol CalculatorPresenterProtocol: AnyObject {
-    var view: CalculatorViewProtocol? { get set }
+protocol CalculatorPresenterProtocol: AnyObject, ObservableObject {
     var interactor: CalculatorInteractorInputProtocol? { get set }
     var router: CalculatorRouterProtocol? { get set }
+    
+    var displayText: String { get }
     
     // View -> Presenter
     func viewDidLoad()

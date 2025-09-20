@@ -1,19 +1,14 @@
 import SwiftUI
 
-struct CalculatorView: View, CalculatorViewProtocol {
-    @State private var displayText = "0"
-    var presenter: CalculatorPresenterProtocol?
+struct CalculatorView: View {
+    @ObservedObject var presenter: CalculatorPresenter
 
-    init(presenter: CalculatorPresenterProtocol? = nil) {
-        self.presenter = presenter
-    }
-    
     var body: some View {
         VStack(spacing: 1) {
             // Display
             HStack {
                 Spacer()
-                Text(displayText)
+                Text(presenter.displayText)
                     .font(.system(size: 90))
                     .fontWeight(.light)
                     .foregroundColor(.white)
@@ -42,7 +37,7 @@ struct CalculatorView: View, CalculatorViewProtocol {
         }
         .background(Color.black)
         .onAppear {
-            self.presenter?.viewDidLoad()
+            self.presenter.viewDidLoad()
         }
     }
 
@@ -50,27 +45,22 @@ struct CalculatorView: View, CalculatorViewProtocol {
     private func didTapButton(_ button: String) {
         switch button {
         case "0"..."9":
-            presenter?.didTapDigit(button)
+            presenter.didTapDigit(button)
         case "+", "-", "×", "÷":
-            presenter?.didTapOperator(button)
+            presenter.didTapOperator(button)
         case "=":
-            presenter?.didTapEquals()
+            presenter.didTapEquals()
         case "AC":
-            presenter?.didTapClear()
+            presenter.didTapClear()
         case ".":
-            presenter?.didTapDecimal()
+            presenter.didTapDecimal()
         case "+/-":
-            presenter?.didTapSign()
+            presenter.didTapSign()
         case "%":
-            presenter?.didTapPercent()
+            presenter.didTapPercent()
         default:
             break
         }
-    }
-    
-    // Presenter -> View
-    func updateDisplay(with text: String) {
-        self.displayText = text
     }
 
     // Button Layout Definition
@@ -100,8 +90,6 @@ struct CalculatorView: View, CalculatorViewProtocol {
 struct CalculatorView_Previews: PreviewProvider {
     static var previews: some View {
         let presenter = CalculatorPresenter()
-        let view = CalculatorView(presenter: presenter)
-        presenter.view = view // A simplified connection for preview
-        return view
+        return CalculatorView(presenter: presenter)
     }
 }
