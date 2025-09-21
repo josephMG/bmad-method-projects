@@ -12,6 +12,7 @@ General Users: People who need a simple, reliable tool for everyday calculations
 *   **Scientific Functions (Landscape Mode):** Includes all core operations and adds advanced functions (e.g., trigonometric functions, logarithms, square roots, etc.).
 *   **User Interface & Experience (UI/UX):** Clean, minimalist design inspired by the native iOS Calculator. Responsive layout that automatically switches between modes on device rotation.
 *   **Technical Foundation:** Built using the latest iOS SDK and SwiftUI. Includes comprehensive unit and basic UI tests. Adheres to all Apple App Store guidelines.
+*   **Currency Exchange:** Convert between TWD, USD, JPY, KRW with constant rates.
 
 ## Non-Functional Requirements
 *   **Performance:** Quick launch (<2s), instantaneous calculations, and a smooth, responsive UI.

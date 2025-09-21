@@ -41,6 +41,21 @@ class CalculatorPresenterTests: XCTestCase {
         presenter.didEncounterError("Test Error")
         XCTAssertEqual(presenter.displayText, "Test Error")
     }
+
+    func testDidTapPercent() {
+        presenter.didTapPercent()
+        XCTAssertTrue(interactorMock.processPercentCalled)
+    }
+
+    func testDidTapSquareRoot() {
+        presenter.didTapSquareRoot()
+        XCTAssertTrue(interactorMock.processSquareRootCalled)
+    }
+
+    func testDidTapSignChange() {
+        presenter.didTapSignChange()
+        XCTAssertTrue(interactorMock.processSignChangeCalled)
+    }
 }
 
 // Mocks for testing Presenter
@@ -61,10 +76,24 @@ class CalculatorInteractorMock: CalculatorInteractorInputProtocol {
         lastOperator = op
     }
     
+    var processPercentCalled = false
+    func processPercent() {
+        processPercentCalled = true
+    }
+    
+    var processSquareRootCalled = false
+    func processSquareRoot() {
+        processSquareRootCalled = true
+    }
+
+    var processSignChangeCalled = false
+    func processSignChange() {
+        processSignChangeCalled = true
+    }
+    
     // Other protocol methods can be stubbed out as needed
     func processEquals() {}
     func processClear() {}
     func processDecimal() {}
     func processSign() {}
-    func processPercent() {}
 }

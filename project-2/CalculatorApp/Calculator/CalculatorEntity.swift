@@ -16,10 +16,28 @@ enum Operation: String {
     case subtract = "-"
     case multiply = "×"
     case divide = "÷"
+    case percentage = "%"
+    case squareRoot = "√"
+    case powerOfTwo = "x²"
+    case sine = "sin"
+    case cosine = "cos"
+    case tangent = "tan"
+    case naturalLogarithm = "ln"
+    case base10Logarithm = "log10"
+    case eToThePowerOfX = "e^x"
+    case tenToThePowerOfX = "10^x"
+    case xToThePowerOfY = "x^y"
+    case cubeRoot = "³√"
+    case factorial = "x!"
+    case signChange = "+/-"
 }
 
 // Enum for potential calculation errors.
 enum CalculationError: Error {
     case divisionByZero
     case invalidInput
+    case invalidInputForSquareRoot
+    case invalidInputForTrigonometricFunction
+    case logarithmOfNonPositiveNumber
+    case factorialOfNegativeNumber
 }

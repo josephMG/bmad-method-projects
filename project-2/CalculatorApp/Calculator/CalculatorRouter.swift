@@ -17,8 +17,19 @@ class CalculatorRouter: CalculatorRouterProtocol {
         // Connect the components
         presenter.interactor = interactor
         presenter.router = router
+        presenter.view = hostingController
         interactor.presenter = presenter
 
         return hostingController
+    }
+    
+    func presentScientificCalculator(from view: UIViewController) {
+        let scientificCalculatorVC = ScientificCalculatorRouter.createModule()
+        view.present(scientificCalculatorVC, animated: true, completion: nil)
+    }
+    
+    func presentCurrencyExchange(from view: UIViewController) {
+        let currencyExchangeVC = CurrencyExchangeRouter.createModule()
+        view.present(currencyExchangeVC, animated: true, completion: nil)
     }
 }

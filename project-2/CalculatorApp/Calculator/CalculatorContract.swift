@@ -6,6 +6,7 @@ import UIKit
 protocol CalculatorPresenterProtocol: AnyObject, ObservableObject {
     var interactor: CalculatorInteractorInputProtocol? { get set }
     var router: CalculatorRouterProtocol? { get set }
+    var view: UIViewController? { get set }
     
     var displayText: String { get }
     
@@ -16,8 +17,11 @@ protocol CalculatorPresenterProtocol: AnyObject, ObservableObject {
     func didTapEquals()
     func didTapClear()
     func didTapDecimal()
-    func didTapSign()
     func didTapPercent()
+    func didTapSignChange()
+    func didTapSquareRoot()
+    func didTapScientificCalculator()
+    func didTapCurrencyExchange()
 }
 
 // MARK: - Interactor Protocols
@@ -30,8 +34,9 @@ protocol CalculatorInteractorInputProtocol: AnyObject {
     func processEquals()
     func processClear()
     func processDecimal()
-    func processSign()
+    func processSignChange()
     func processPercent()
+    func processSquareRoot()
 }
 
 protocol CalculatorInteractorOutputProtocol: AnyObject {
@@ -43,4 +48,6 @@ protocol CalculatorInteractorOutputProtocol: AnyObject {
 // MARK: - Router Protocol
 protocol CalculatorRouterProtocol: AnyObject {
     static func createModule() -> UIViewController
+    func presentScientificCalculator(from view: UIViewController)
+    func presentCurrencyExchange(from view: UIViewController)
 }

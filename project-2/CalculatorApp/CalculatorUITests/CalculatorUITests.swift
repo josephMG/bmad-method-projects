@@ -36,4 +36,63 @@ class CalculatorUITests: XCTestCase {
         // Assert that the display shows "3"
         XCTAssertEqual(display.label, "3")
     }
+
+    func testPercentageCalculation() {
+        app.buttons["1"].tap()
+        app.buttons["0"].tap()
+        app.buttons["0"].tap()
+        app.buttons["+"].tap()
+        app.buttons["1"].tap()
+        app.buttons["0"].tap()
+        app.buttons["%"].tap()
+        
+        let display = app.staticTexts.firstMatch
+        XCTAssertEqual(display.label, "110")
+    }
+
+    func testSquareRootCalculation() {
+        app.buttons["9"].tap()
+        app.buttons["√"].tap()
+        
+        let display = app.staticTexts.firstMatch
+        XCTAssertEqual(display.label, "3")
+    }
+
+    func testSquareRootOfNegativeNumber() {
+        app.buttons["4"].tap()
+        app.buttons["+/-"].tap()
+        app.buttons["√"].tap()
+        
+        let display = app.staticTexts.firstMatch
+        XCTAssertEqual(display.label, "Invalid input for square root")
+    }
+
+    func testSignChangePositiveToNegative() {
+        app.buttons["1"].tap()
+        app.buttons["2"].tap()
+        app.buttons["3"].tap()
+        app.buttons["+/-"].tap()
+        
+        let display = app.staticTexts.firstMatch
+        XCTAssertEqual(display.label, "-123")
+    }
+
+    func testSignChangeNegativeToPositive() {
+        app.buttons["1"].tap()
+        app.buttons["2"].tap()
+        app.buttons["3"].tap()
+        app.buttons["+/-"].tap() // Make it -123
+        app.buttons["+/-"].tap() // Make it 123 again
+        
+        let display = app.staticTexts.firstMatch
+        XCTAssertEqual(display.label, "123")
+    }
+
+    func testSignChangeZero() {
+        app.buttons["0"].tap()
+        app.buttons["+/-"].tap()
+        
+        let display = app.staticTexts.firstMatch
+        XCTAssertEqual(display.label, "0")
+    }
 }

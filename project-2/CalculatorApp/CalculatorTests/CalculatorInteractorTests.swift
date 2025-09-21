@@ -75,6 +75,60 @@ class CalculatorInteractorTests: XCTestCase {
         interactor.processClear()
         XCTAssertEqual(presenterMock.lastDisplayValue, "0")
     }
+
+    func testPercentage() {
+        interactor.processDigit("100")
+        interactor.processOperator("+")
+        interactor.processDigit("10")
+        interactor.processPercent()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "110")
+    }
+
+    func testPercentageWithoutFirstOperand() {
+        interactor.processDigit("50")
+        interactor.processPercent()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "0.5")
+    }
+
+    func testSquareRoot() {
+        interactor.processDigit("9")
+        interactor.processSquareRoot()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "3")
+    }
+
+    func testSquareRootOfNegativeNumber() {
+        interactor.processDigit("-4")
+        interactor.processSquareRoot()
+        XCTAssertEqual(presenterMock.lastError, "Invalid input for square root")
+    }
+
+    func testSignChangePositiveNumber() {
+        interactor.processDigit("123")
+        interactor.processSignChange()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "-123")
+    }
+
+    func testSignChangeNegativeNumber() {
+        interactor.processDigit("-123")
+        interactor.processSignChange()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "123")
+    }
+
+    func testSignChangeZero() {
+        interactor.processDigit("0")
+        interactor.processSignChange()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "0")
+    }
+
+    func testSignChangeMultipleTimes() {
+        interactor.processDigit("10")
+        interactor.processSignChange()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "-10")
+        interactor.processSignChange()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "10")
+        interactor.processSignChange()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "-10")
+    }
 }
 
 // Mock Presenter for testing Interactor output

@@ -71,14 +71,33 @@ class CalculatorInteractor: CalculatorInteractorInputProtocol {
         }
     }
     
-    func processSign() {
+    func processSignChange() {
         state.displayValue.negate()
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
     }
     
     func processPercent() {
-        state.displayValue /= 100
+        if let firstOperand = state.firstOperand, let operation = state.pendingOperation {
+            let percentValue = firstOperand * (state.displayValue / 100)
+            let result = performCalculation(firstOperand: firstOperand, secondOperand: percentValue, operation: operation)
+            state.displayValue = result
+            presenter?.didUpdateDisplayValue(formatDisplay(result))
+        } else {
+            state.displayValue /= 100
+            presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
+        }
+        state.isNewValue = true
+    }
+
+    func processSquareRoot() {
+        if state.displayValue < 0 {
+            presenter?.didEncounterError("Invalid input for square root")
+            return
+        }
+        let result = NSDecimalNumber(decimal: state.displayValue).doubleValue.squareRoot()
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
+        state.isNewValue = true
     }
     
     private func performCalculation(firstOperand: Decimal, secondOperand: Decimal, operation: Operation) -> Decimal {
@@ -95,6 +114,9 @@ class CalculatorInteractor: CalculatorInteractorInputProtocol {
                 return 0
             }
             return firstOperand / secondOperand
+        case .percentage, .squareRoot, .powerOfTwo, .sine, .cosine, .tangent, .naturalLogarithm, .base10Logarithm, .eToThePowerOfX, .tenToThePowerOfX, .xToThePowerOfY, .cubeRoot, .factorial, .signChange:
+            // These are handled in their own methods
+            return state.displayValue
         }
     }
     

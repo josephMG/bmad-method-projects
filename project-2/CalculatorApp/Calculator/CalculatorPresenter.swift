@@ -1,9 +1,11 @@
 import Foundation
 import Combine
+import UIKit
 
 class CalculatorPresenter: ObservableObject, CalculatorPresenterProtocol {
     var interactor: CalculatorInteractorInputProtocol?
     var router: CalculatorRouterProtocol?
+    weak var view: UIViewController?
 
     @Published var displayText = "0"
 
@@ -31,12 +33,28 @@ class CalculatorPresenter: ObservableObject, CalculatorPresenterProtocol {
         interactor?.processDecimal()
     }
     
-    func didTapSign() {
-        interactor?.processSign()
+    func didTapSignChange() {
+        interactor?.processSignChange()
     }
     
     func didTapPercent() {
         interactor?.processPercent()
+    }
+    
+    func didTapSquareRoot() {
+        interactor?.processSquareRoot()
+    }
+
+    func didTapScientificCalculator() {
+        if let view = view {
+            router?.presentScientificCalculator(from: view)
+        }
+    }
+
+    func didTapCurrencyExchange() {
+        if let view = view {
+            router?.presentCurrencyExchange(from: view)
+        }
     }
 }
 
