@@ -96,3 +96,46 @@
 - Implemented percentage and square root functionality.
 - Added unit and UI tests for the new features.
 - All tests are passing.
+
+## QA Results
+
+### Review Date: 2025-09-22
+
+### Reviewed By: Quinn (Test Architect)
+
+### Code Quality Assessment
+Cannot assess without code.
+
+### Refactoring Performed
+None, as code is not available for review.
+
+### Compliance Check
+*   Coding Standards: Cannot verify without code.
+*   Project Structure: The file list indicates correct placement of files.
+*   Testing Strategy: The testing requirements are well-defined and cover unit and UI tests for the new features.
+*   All ACs Met: Cannot verify without code/tests.
+
+### Improvements Checklist
+*   [ ] Verify comprehensive unit tests for `applyPercentage()` covering all specified scenarios and edge cases (e.g., `100 + 10%`, `50 * 20%`, `100 - 50%`, applying percentage to zero).
+*   [ ] Verify comprehensive unit tests for `applySquareRoot()` covering all specified scenarios and edge cases (e.g., `√9`, `√0`, `√-4` producing an error).
+*   [ ] Confirm unit tests assert correct `CalculationError` for invalid square root operations.
+*   [ ] Verify Presenter unit tests confirm correct handling of `didTapPercentage()` and `didTapSquareRoot()` and proper formatting of results.
+*   [ ] Verify UI tests confirm the presence and functionality of percentage and square root buttons, and correct display of results for example calculations.
+*   [ ] Ensure the tailored error messages for invalid square root input are user-friendly and clear.
+
+### Security Review
+Not directly applicable to this story.
+
+### Performance Considerations
+Calculations should be instantaneous.
+
+### Files Modified During Review
+None.
+
+### Gate Status
+Gate: CONCERNS → qa.qaLocation/gates/12-implement-percentage-calculation-and-square-root.yml
+Risk profile: qa.qaLocation/assessments/12-implement-percentage-calculation-and-square-root-risk-20250922.md
+NFR assessment: qa.qaLocation/assessments/12-implement-percentage-calculation-and-square-root-nfr-20250922.md
+
+### Recommended Status
+✗ Changes Required - See unchecked items above. The primary concern is the lack of concrete code and test results to review the implementation.

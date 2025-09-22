@@ -91,3 +91,45 @@
 - Implemented sign change functionality.
 - Added unit and UI tests for the new feature.
 - All tests are passing.
+
+## QA Results
+
+### Review Date: 2025-09-22
+
+### Reviewed By: Quinn (Test Architect)
+
+### Code Quality Assessment
+Cannot assess without code.
+
+### Refactoring Performed
+None, as code is not available for review.
+
+### Compliance Check
+*   Coding Standards: Cannot verify without code.
+*   Project Structure: The file list indicates correct placement of files.
+*   Testing Strategy: The testing requirements are well-defined and cover unit and UI tests for the new feature.
+*   All ACs Met: Cannot verify without code/tests.
+
+### Improvements Checklist
+*   [ ] Verify comprehensive unit tests for `applySignChange()` covering positive numbers, negative numbers, and zero.
+*   [ ] Verify unit tests for `applySignChange()` covering multiple applications of the operator.
+*   [ ] Confirm unit tests assert correct `CalculationError` for any invalid operations (though unlikely for this function).
+*   [ ] Verify Presenter unit tests confirm correct handling of `didTapSignChange()` and proper formatting of results.
+*   [ ] Verify UI tests confirm the presence and functionality of the sign change button, and correct display of results after sign change.
+
+### Security Review
+Not directly applicable to this story.
+
+### Performance Considerations
+Sign change should be instantaneous.
+
+### Files Modified During Review
+None.
+
+### Gate Status
+Gate: CONCERNS → qa.qaLocation/gates/15-implement-sign-change-functionality.yml
+Risk profile: qa.qaLocation/assessments/15-implement-sign-change-functionality-risk-20250922.md
+NFR assessment: qa.qaLocation/assessments/15-implement-sign-change-functionality-nfr-20250922.md
+
+### Recommended Status
+✗ Changes Required - See unchecked items above. The primary concern is the lack of concrete code and test results to review the implementation.

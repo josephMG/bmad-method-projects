@@ -1,0 +1,17 @@
+schema: 1
+story: "3"
+story_title: "Data Models and Core State"
+gate: "CONCERNS"
+status_reason: "The primary concern is the lack of concrete test evidence or code to review for these critical data models."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-09-22T00:00:00Z"
+
+waiver: { active: false }
+
+top_issues: []
+
+risk_summary:
+  totals: { critical: 0, high: 0, medium: 0, low: 0 }
+  recommendations:
+    must_fix: []
+    monitor: []
