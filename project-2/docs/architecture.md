@@ -1,202 +1,95 @@
-# iOS Calculator App: VIPER Technical Specification
+# iOS Calculator App - Architecture Document
 
-This document provides a detailed technical specification and data flow design for the iOS Calculator App, based on the VIPER architectural pattern.
+## 1. Introduction
 
-## 1. VIPER Component Breakdown
+This document outlines the software architecture for the iOS Calculator App. It details the technology stack, project structure, architectural patterns, and key design decisions to guide development and ensure maintainability. This document reflects the actual state of the codebase.
 
-The application will be divided into distinct modules, each with five core components: View, Interactor, Presenter, Entity, and Router. This separation of concerns ensures a clean, scalable, and highly testable codebase.
+### 1.1. Document Scope
 
-### View
+This architecture document covers the entire iOS Calculator application, including the core calculator functionality and the scientific and currency exchange modules.
 
-The View layer will be implemented using **SwiftUI**. Its responsibilities are strictly limited to UI rendering and capturing user input.
+## 2. High-Level Architecture
 
--   **Implementation:** A `CalculatorView` struct will define the layout of buttons and the display screen. It will be lightweight and declarative.
--   **State Management:** The View will use SwiftUI's `@State` for transient UI state (e.g., button highlighting on tap). The primary display text and other core state will be provided by the Presenter via a data-bound ViewModel object (e.g., an `@ObservedObject`).
--   **Responsibilities:**
-    -   Render the calculator grid and display.
-    -   Receive the formatted display string from the Presenter.
-    -   Forward user gestures (e.g., `onTapGesture`) to the Presenter for handling. It will not contain any business or formatting logic.
+The application follows a modular, protocol-oriented design based on the **VIPER** architectural pattern. This approach ensures a clean separation of concerns, making the application scalable, testable, and maintainable.
 
-### Interactor
+The application is divided into three primary, independent VIPER modules:
+1.  **Calculator:** The main module providing basic arithmetic operations. It also acts as the entry point and router to the other modules.
+2.  **ScientificCalculator:** A distinct module for advanced mathematical functions.
+3.  **CurrencyExchange:** A module for converting between different currencies.
 
-The Interactor is the heart of the module's business logic, containing the core calculation engine. It knows nothing about the UI.
+### 2.1. Technology Stack
 
--   **Inputs:** The Interactor will receive simple, validated input from the Presenter, defined by a protocol. Example inputs include:
-    -   `appendDigit(_ digit: Int)`
-    -   `setOperation(_ operation: Operation)`
-    -   `performCalculation()`
-    -   `clear()`
--   **Outputs:** After processing an input, the Interactor communicates results back to the Presenter via a delegate protocol. Outputs will be pure data, not formatted strings.
-    -   `didUpdateDisplayValue(_ value: Decimal)`
-    -   `didEncounterError(_ error: CalculationError)`
--   **Responsibilities:**
-    -   Maintain the current calculation state (operands, pending operations).
-    -   Execute all mathematical operations.
-    -   Handle business rules and edge cases (e.g., division by zero).
+| Category | Technology | Notes |
+| :--- | :--- | :--- |
+| **Platform** | iOS | Supports the latest two major iOS versions. |
+| **Language** | Swift | The entire codebase is written in Swift. |
+| **UI Framework** | SwiftUI | Used for all UI components and layouts. |
+| **Architecture** | VIPER | Enforces separation of concerns. |
+| **IDE** | Xcode | Required for development and building. |
 
-### Presenter
+### 2.2. Repository Structure
 
-The Presenter acts as the central coordinator, mediating between the View, Interactor, and Router.
-
--   **Data Formatting:** It receives raw `Decimal` or `Error` objects from the Interactor and formats them into user-friendly `String`s for the View. This includes handling decimal points, thousands separators, and error messages.
--   **Gesture Handling:** It receives raw gesture notifications from the View (e.g., `didTapPlusButton()`) and translates them into logical commands for the Interactor (e.g., `interactor.setOperation(.add)`).
--   **State Management:** It holds the state that the View needs to render, typically in an `ObservableObject`. This ViewModel will expose published properties like `displayText: String` that the SwiftUI View can bind to.
-
-### Entity
-
-Entities are the plain data structures that model the application's core concepts. They have no business logic.
-
--   **`CalculationState`:** A struct to encapsulate the calculator's memory.
-    ```swift
-    struct CalculationState {
-        var firstOperand: Decimal?
-        var secondOperand: Decimal?
-        var pendingOperation: Operation?
-        var currentDisplayValue: Decimal = 0
-        var isEnteringDecimal = false
-    }
-    ```
--   **`Operation`:** An enum representing the mathematical operations.
-    ```swift
-    enum Operation {
-        case add, subtract, multiply, divide
-    }
-    ```
--   **`CalculationError`:** An enum for handling business logic errors.
-    ```swift
-    enum CalculationError: Error {
-        case divisionByZero
-    }
-    ```
-
-### Router
-
-The Router manages navigation and the view hierarchy.
-
--   **Responsibilities:** For this application, the Router's role is minimal but essential for structure.
-    -   It will be responsible for instantiating and assembling the VIPER module (View, Presenter, Interactor).
-    -   It will present the initial `CalculatorView` on screen.
--   **Future Scalability:** If the app were to expand (e.g., with a "Scientific Mode" or a "History" screen), the Router would handle the transitions between these views, ensuring the `CalculatorView` itself remains unaware of the broader navigation flow.
-
-## 2. Data Flow Example: `2 + 3 =`
-
-This sequence describes the flow of control and data for a simple calculation:
-
-1.  **User taps "2"**:
-    -   `View` captures the tap and calls `presenter.didTapDigit(2)`.
-    -   `Presenter` calls `interactor.appendDigit(2)`.
-    -   `Interactor` updates its internal `CalculationState` and calls its delegate method `presenter.didUpdateDisplayValue(2)`.
-    -   `Presenter` formats the `Decimal` value `2` into the `String` "2" and updates its published `displayText` property.
-    -   `View` automatically re-renders to show "2".
-
-2.  **User taps "+"**:
-    -   `View` calls `presenter.didTapAdd()`.
-    -   `Presenter` calls `interactor.setOperation(.add)`.
-    -   `Interactor` stores the first operand and the pending operation in its `CalculationState`. No display change is needed.
-
-3.  **User taps "3"**:
-    -   `View` calls `presenter.didTapDigit(3)`.
-    -   `Presenter` calls `interactor.appendDigit(3)`.
-    -   `Interactor` updates its state and calls `presenter.didUpdateDisplayValue(3)`.
-    -   `Presenter` formats this into "3" and updates the `displayText`.
-    -   `View` re-renders to show "3".
-
-4.  **User taps "="**:
-    -   `View` calls `presenter.didTapEquals()`.
-    -   `Presenter` calls `interactor.performCalculation()`.
-    -   `Interactor` executes `2 + 3`, calculates the result `5`, updates its state, and calls `presenter.didUpdateDisplayValue(5)`.
-    -   `Presenter` formats the result into "5" and updates the `displayText`.
-    -   `View` re-renders to show the final result, "5".
-
-## 3. Folder Structure
-
-A clear folder structure is crucial for maintaining separation of concerns.
+The project is organized within the `CalculatorApp` directory, which contains the Xcode project, source code, and tests.
 
 ```
-Calculator/
-├── Application/
-│   ├── AppDelegate.swift
-│   └── SceneDelegate.swift
-│
-├── Modules/
-│   └── Calculator/
-│       ├── CalculatorView.swift         // SwiftUI View
-│       ├── CalculatorInteractor.swift   // Business Logic
-│       ├── CalculatorPresenter.swift    // View Logic & Formatting
-│       ├── CalculatorEntity.swift       // Data Models
-│       ├── CalculatorRouter.swift       // Navigation
-│       └── CalculatorContract.swift     // Protocols for component interfaces
-│
-└── Resources/
-    ├── Assets.xcassets
-    └── Info.plist
+CalculatorApp/
+├── Calculator/              # Main application source code
+│   ├── Modules/             # Sub-modules for distinct features
+│   │   ├── ScientificCalculator/
+│   │   └── CurrencyExchange/
+│   ├── CalculatorApp.swift  # App entry point
+│   ├── CalculatorContract.swift # VIPER protocols for the main module
+│   ├── CalculatorView.swift   # Main module's View
+│   ├── ... (Interactor, Presenter, etc.)
+│   └── ContentView.swift
+├── Calculator.xcodeproj/    # Xcode project configuration
+├── CalculatorTests/         # Unit tests
+└── CalculatorUITests/       # UI tests
 ```
 
-## 4. Finalized CI/CD Plan (GitHub Actions)
+## 3. Detailed Architecture - VIPER
 
-The CI/CD pipeline will automate testing and building on every push to the `main` branch or pull request targeting `main`.
+Each module (`Calculator`, `ScientificCalculator`, `CurrencyExchange`) is self-contained and adheres to the VIPER pattern.
 
-**Workflow File:** `.github/workflows/ci.yml`
+*   **View**: A SwiftUI `View` responsible for displaying the UI and capturing user input. It is owned by a `UIHostingController`. It communicates user actions to the Presenter.
+    *   *Files*: `*View.swift`
+*   **Interactor**: Contains the business logic for a module. It processes data, performs calculations, and is independent of the UI. It receives requests from the Presenter and sends results back via a protocol.
+    *   *Files*: `*Interactor.swift`
+*   **Presenter**: The "middle-man" of the module. It receives user actions from the View, sends requests to the Interactor for business logic, gets data back from the Interactor, formats it, and publishes the final state for the View to display. It also communicates with the Router for navigation.
+    *   *Files*: `*Presenter.swift`
+*   **Entity**: Simple data structures or models used by the Interactor.
+    *   *Files*: `*Entity.swift` (e.g., `CalculationState`, `Currency`, `ExchangeRates`)
+*   **Router**: Handles navigation between modules. It is responsible for creating and presenting new VIPER modules.
+    *   *Files*: `*Router.swift`
+*   **Contract**: A central file defining all the `protocols` for a module's V, I, P, and R components, ensuring clear boundaries and responsibilities.
+    *   *Files*: `*Contract.swift`
 
-```yaml
-name: iOS CI
+### 3.1. Module Interaction and Navigation
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+The main `CalculatorRouter` is responsible for instantiating and presenting the other modules.
 
-jobs:
-  build_and_test:
-    name: Build and Test
-    runs-on: macos-latest
+-   When the user taps the "Scientific" button in the `CalculatorView`, the `CalculatorPresenter` calls the `CalculatorRouter`.
+-   The `CalculatorRouter` then calls `ScientificCalculatorRouter.createModule()` to build the entire scientific calculator VIPER stack.
+-   The new module's initial view (`UIHostingController`) is then presented modally over the current view.
+-   The same flow applies to the `CurrencyExchange` module.
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+This design keeps the modules completely decoupled. The main `Calculator` module does not need to know anything about the internal workings of the `ScientificCalculator` or `CurrencyExchange` modules.
 
-    - name: Select Xcode version
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '14.2' # Specify the project's Xcode version
+## 4. Data Models
 
-    - name: Run Tests
-      run: |
-        xcodebuild test \
-          -scheme Calculator \
-          -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' \
-          -enableCodeCoverage YES \
-          | xcpretty
+-   **`CalculationState`**: A struct within the `CalculatorEntity.swift` file that holds the current state of a calculation (display value, operands, pending operation).
+-   **`Operation`**: An enum that defines all possible mathematical operations.
+-   **`Currency` & `ExchangeRates`**: Found in `CurrencyExchangeEntity.swift`, these define the supported currencies and their fixed conversion rates.
 
-    - name: Build Application
-      run: |
-        xcodebuild build \
-          -scheme Calculator \
-          -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' \
-          | xcpretty
-```
+## 5. Testing Strategy
 
-## 5. Finalized Testing Strategy
+The project structure includes dedicated folders for testing, aligning with the VIPER pattern's high testability.
 
-Each component of the VIPER module will be tested independently.
+-   **`CalculatorTests/`**: This directory is intended for unit tests. The Interactors and Presenters of each module should be thoroughly tested here, as they contain the core business logic and view logic, respectively.
+-   **`CalculatorUITests/`**: This directory is for UI tests, which verify user flows and the correct behavior of the SwiftUI views.
 
--   **View (UI Tests with XCUITest):**
-    -   Verify that all buttons and the display label are present on the screen.
-    -   Simulate user taps on digit and operator buttons and assert that the display label updates correctly.
-    -   Test UI behavior in both portrait and landscape orientations.
+## 6. Technical Debt and Known Issues
 
--   **Interactor (Unit Tests with XCTest):**
-    -   Test the calculation logic in complete isolation.
-    -   Provide a sequence of inputs (e.g., `appendDigit`, `setOperation`) and assert that the final output delegate call returns the mathematically correct `Decimal`.
-    -   Test edge cases: division by zero, calculations with negative numbers, and repeated operations.
-    -   Assert that the correct `CalculationError` is produced when invalid operations occur.
-
--   **Presenter (Unit Tests with XCTest):**
-    -   Use mock objects for the Interactor, View, and Router.
-    -   Test data formatting: Given the Interactor's delegate returns `Decimal(3.14159)`, assert that the Presenter provides a correctly formatted `String` (e.g., "3.14159") to the View.
-    -   Test gesture handling: When a `didTapAdd()` function is called, assert that the Presenter calls the `interactor.setOperation(.add)` method on its mock Interactor.
-
--   **Router (Unit Tests with XCTest):**
-    -   Use a mock navigation controller to test navigation logic.
-    -   Assert that the `createModule()` function correctly assembles the VIPER stack with all dependencies properly injected.
+-   The `ScientificCalculatorEntity.swift` file is currently empty. It should be populated with any data models specific to scientific calculations if needed.
+-   The exchange rates in `CurrencyExchangeEntity.swift` are hardcoded. For a real-world application, this would be considered technical debt and should be replaced with an API call to fetch live rates.
+-   Error handling is basic and displays a simple "Error" message. A more robust system would provide specific error details to the user.

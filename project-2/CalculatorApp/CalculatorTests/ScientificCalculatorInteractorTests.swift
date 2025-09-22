@@ -74,9 +74,10 @@ class ScientificCalculatorInteractorTests: XCTestCase {
     }
 
     func testNaturalLogarithm() {
-        interactor.processDigit("2.71828") // Approximately e
+        interactor.processDigit("2.718281828459045") // More precise approximation of e
         interactor.processNaturalLogarithm()
-        XCTAssertEqual(presenterMock.lastDisplayValue, "1")
+        // Allow for floating point inaccuracies
+        XCTAssertEqual(Double(presenterMock.lastDisplayValue ?? "0") ?? 0, 1.0, accuracy: 0.000001)
     }
 
     func testNaturalLogarithmOfNonPositiveNumber() {

@@ -11,10 +11,15 @@ class CalculatorUITests: XCTestCase {
     }
 
     func testButtonsAreVisible() {
-        XCTAssertTrue(app.buttons["1"].exists)
-        XCTAssertTrue(app.buttons["+"].exists)
-        XCTAssertTrue(app.buttons["="].exists)
-        XCTAssertTrue(app.buttons["AC"].exists)
+        let button1 = app.buttons["1"]
+        let buttonPlus = app.buttons["+"]
+        let buttonEquals = app.buttons["="]
+        let buttonAC = app.buttons["AC"]
+
+        XCTAssertTrue(button1.waitForExistence(timeout: 5), "Button '1' did not appear.")
+        XCTAssertTrue(buttonPlus.waitForExistence(timeout: 5), "Button '+' did not appear.")
+        XCTAssertTrue(buttonEquals.waitForExistence(timeout: 5), "Button '=' did not appear.")
+        XCTAssertTrue(buttonAC.waitForExistence(timeout: 5), "Button 'AC' did not appear.")
     }
 
     func testSimpleCalculation() {

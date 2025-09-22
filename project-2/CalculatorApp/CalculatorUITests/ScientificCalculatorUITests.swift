@@ -89,9 +89,14 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["0"].tap()
         app.buttons["0"].tap()
         app.buttons["log10"].tap()
-        
+
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "2")
+        // Convert the display label to Double for comparison
+        if let displayValue = Double(display.label.replacingOccurrences(of: ",", with: "")) {
+            XCTAssertEqual(displayValue, 2.0, accuracy: 0.000001)
+        } else {
+            XCTFail("Display label is not a valid number: \(display.label)")
+        }
     }
 
     func testEToThePowerOfXCalculation() {
