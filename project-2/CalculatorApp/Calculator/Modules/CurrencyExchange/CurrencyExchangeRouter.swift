@@ -13,7 +13,7 @@ class CurrencyExchangeRouter: CurrencyExchangeRouterProtocol {
 
         presenter.interactor = interactor
         presenter.router = router
-        interactor.presenter = presenter
+//        interactor.presenter = presenter // Interactor does not need a presenter for this module
 
         return hostingController
     }

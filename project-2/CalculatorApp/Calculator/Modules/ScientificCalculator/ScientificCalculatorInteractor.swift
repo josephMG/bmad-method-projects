@@ -82,7 +82,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
     func processPowerOfTwo() {
         let number = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let result = pow(number, 2)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -91,7 +91,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
         let degrees = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let radians = degrees * .pi / 180
         let result = sin(radians)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -100,7 +100,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
         let degrees = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let radians = degrees * .pi / 180
         let result = cos(radians)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -113,7 +113,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
         }
         let radians = degrees * .pi / 180
         let result = tan(radians)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -125,7 +125,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
         }
         let number = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let result = log(number)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -137,7 +137,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
         }
         let number = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let result = log10(number)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -145,7 +145,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
     func processEToThePowerOfX() {
         let number = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let result = exp(number)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -153,7 +153,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
     func processTenToThePowerOfX() {
         let number = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let result = pow(10, number)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -167,7 +167,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
             let base = NSDecimalNumber(decimal: firstOperand).doubleValue
             let exponent = NSDecimalNumber(decimal: state.displayValue).doubleValue
             let result = pow(base, exponent)
-            state.displayValue = Decimal(result, roundingMode: .plain)
+            state.displayValue = Decimal(result)
             presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
             state.firstOperand = nil
             state.pendingOperation = nil
@@ -178,7 +178,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
     func processCubeRoot() {
         let number = NSDecimalNumber(decimal: state.displayValue).doubleValue
         let result = cbrt(number)
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -197,7 +197,7 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
                 result *= i
             }
         }
-        state.displayValue = Decimal(result, roundingMode: .plain)
+        state.displayValue = Decimal(result)
         presenter?.didUpdateDisplayValue(formatDisplay(state.displayValue))
         state.isNewValue = true
     }
@@ -226,9 +226,9 @@ class ScientificCalculatorInteractor: ScientificCalculatorInteractorInputProtoco
         let number = NSDecimalNumber(decimal: value)
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 8
+        formatter.minimumFractionDigits = 0 // Ensure integers are displayed without trailing .0
         formatter.usesGroupingSeparator = false // Ensure no grouping separators for consistent testing
         formatter.decimalSeparator = "." // Ensure dot as decimal separator for consistent testing
         return formatter.string(from: number) ?? "0"
     }
 }
-

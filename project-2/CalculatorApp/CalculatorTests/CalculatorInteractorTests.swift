@@ -27,12 +27,28 @@ class CalculatorInteractorTests: XCTestCase {
         XCTAssertEqual(presenterMock.lastDisplayValue, "5")
     }
 
+    func testAdditionWithDecimals() {
+        interactor.processDigit("2.5")
+        interactor.processOperator("+")
+        interactor.processDigit("3.5")
+        interactor.processEquals()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "6")
+    }
+
     func testSubtraction() {
         interactor.processDigit("5")
         interactor.processOperator("-")
         interactor.processDigit("3")
         interactor.processEquals()
         XCTAssertEqual(presenterMock.lastDisplayValue, "2")
+    }
+
+    func testSubtractionResultingInNegative() {
+        interactor.processDigit("3")
+        interactor.processOperator("-")
+        interactor.processDigit("5")
+        interactor.processEquals()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "-2")
     }
 
     func testMultiplication() {
@@ -43,12 +59,36 @@ class CalculatorInteractorTests: XCTestCase {
         XCTAssertEqual(presenterMock.lastDisplayValue, "20")
     }
 
+    func testMultiplicationWithNegativeAndDecimal() {
+        interactor.processDigit("-2.5")
+        interactor.processOperator("×")
+        interactor.processDigit("4")
+        interactor.processEquals()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "-10")
+    }
+
     func testDivision() {
         interactor.processDigit("10")
         interactor.processOperator("÷")
         interactor.processDigit("2")
         interactor.processEquals()
         XCTAssertEqual(presenterMock.lastDisplayValue, "5")
+    }
+
+    func testDivisionWithDecimals() {
+        interactor.processDigit("10.5")
+        interactor.processOperator("÷")
+        interactor.processDigit("2")
+        interactor.processEquals()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "5.25")
+    }
+
+    func testDivisionOfZeroByNonZero() {
+        interactor.processDigit("0")
+        interactor.processOperator("÷")
+        interactor.processDigit("5")
+        interactor.processEquals()
+        XCTAssertEqual(presenterMock.lastDisplayValue, "0")
     }
 
     func testDivisionByZero() {

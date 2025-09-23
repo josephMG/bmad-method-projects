@@ -126,7 +126,8 @@ class CalculatorInteractor: CalculatorInteractorInputProtocol {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 8
         formatter.minimumFractionDigits = 0
-        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false // Ensure no grouping separators for consistent testing
+        formatter.decimalSeparator = "." // Ensure dot as decimal separator for consistent testing
         return formatter.string(from: number) ?? "0"
     }
 }

@@ -56,6 +56,12 @@ class CalculatorPresenter: ObservableObject, CalculatorPresenterProtocol {
             router?.presentCurrencyExchange(from: view)
         }
     }
+
+    func didTapCurrencyExchange() {
+        if let view = view {
+            router?.presentCurrencyExchange(from: view)
+        }
+    }
 }
 
 extension CalculatorPresenter: CalculatorInteractorOutputProtocol {

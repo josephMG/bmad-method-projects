@@ -29,7 +29,7 @@ class CalculatorRouter: CalculatorRouterProtocol {
     }
     
     func presentCurrencyExchange(from view: UIViewController) {
-        let currencyExchangeVC = CurrencyExchangeRouter.createModule()
+        let currencyExchangeVC = CurrencyExchangeRouter.createCurrencyExchangeModule()
         view.present(currencyExchangeVC, animated: true, completion: nil)
     }
 }

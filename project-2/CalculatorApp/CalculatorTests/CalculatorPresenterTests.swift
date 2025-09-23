@@ -42,6 +42,42 @@ class CalculatorPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.displayText, "Test Error")
     }
 
+    func testDidUpdateDisplayValue_basicDecimal() {
+        presenter.didUpdateDisplayValue("123.45")
+        XCTAssertEqual(presenter.displayText, "123.45")
+    }
+
+    func testDidUpdateDisplayValue_largeNumber() {
+        presenter.didUpdateDisplayValue("1234567890.12345")
+        XCTAssertEqual(presenter.displayText, "1234567890.12345")
+    }
+
+    func testDidUpdateDisplayValue_manyDecimalPlaces() {
+        presenter.didUpdateDisplayValue("0.123456789")
+        XCTAssertEqual(presenter.displayText, "0.123456789")
+    }
+
+    func testDidUpdateDisplayValue_zero() {
+        presenter.didUpdateDisplayValue("0")
+        XCTAssertEqual(presenter.displayText, "0")
+    }
+
+    func testDidUpdateDisplayValue_negativeNumber() {
+        presenter.didUpdateDisplayValue("-123.45")
+        XCTAssertEqual(presenter.displayText, "-123.45")
+    }
+
+    func testDidUpdateDisplayValue_integer() {
+        presenter.didUpdateDisplayValue("123.0")
+        XCTAssertEqual(presenter.displayText, "123")
+    }
+
+    func testDidUpdateDisplayValue_integerWithoutDecimal() {
+        presenter.didUpdateDisplayValue("123")
+        XCTAssertEqual(presenter.displayText, "123")
+    }
+
+
     func testDidTapPercent() {
         presenter.didTapPercent()
         XCTAssertTrue(interactorMock.processPercentCalled)

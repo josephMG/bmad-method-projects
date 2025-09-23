@@ -22,6 +22,7 @@ protocol CalculatorPresenterProtocol: AnyObject, ObservableObject {
     func didTapSquareRoot()
     func didTapScientificCalculator()
     func didTapCurrencyExchange()
+    func didTapCurrencyExchange()
 }
 
 // MARK: - Interactor Protocols

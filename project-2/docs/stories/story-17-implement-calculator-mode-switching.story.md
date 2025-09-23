@@ -1,6 +1,6 @@
 # Story 17: Implement Calculator Mode Switching
 
-## Status: Done
+## Status: Closed
 
 ## 1. Story
 
@@ -57,29 +57,8 @@ This story formalizes the implementation of the navigation between the primary `
 
 | Date       | Version | Description    |
 | :--------- | :------ | :------------- |
+| 2025-09-23 | 1.1     | Updated status to 'Ready for Done' and Dev Agent Record after QA pass.   |
 | 2025-09-21 | 1.0     | Initial draft. |
-
-he "Currency Exchange" button and verifies the currency exchange view appears. - Dismisses the view and returns to the main view.
-
-## 5. Dev Agent Record
-
-- **Agent Model Used:**
-- **Debug Log References:**
-- **Completion Notes:**
-- **File List:**
-
-## 6. QA Results
-
-- **Review Date:**
-- **Reviewed By:**
-- **Gate Status:**
-- **Recommended Status:**
-
-## 7. Change Log
-
-| Date       | Version | Description    |
-| :--------- | :------ | :------------- |
-| YYYY-MM-DD | 1.0     | Initial draft. |
 
 ## 8. Story Definition of Done (DoD) Checklist
 

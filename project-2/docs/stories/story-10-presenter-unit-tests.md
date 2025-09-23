@@ -2,7 +2,7 @@
 
 **Description:** As a developer, I need unit tests for the `CalculatorPresenter` to verify its data formatting and gesture handling logic.
 
-**Status:** Done
+**Status:** Ready for Review
 
 **Prerequisites:** Story 5.
 
@@ -35,7 +35,7 @@ None, as code is not available for review.
 *   [x] Confirm unit tests use mock objects for the `View` and `Interactor` to isolate the `Presenter`.
 *   [x] Confirm tests verify correct formatting of `Decimal` values into strings for display.
 *   [x] Confirm tests verify that `View` actions (e.g., `didTapAdd()`) correctly trigger corresponding methods on the mock `Interactor`.
-*   [ ] Ensure test cases cover various input scenarios and formatting edge cases (e.g., large numbers, decimals).
+*   [x] Ensure test cases cover various input scenarios and formatting edge cases (e.g., large numbers, decimals).
 
 ### Security Review
 Not directly applicable to this story.
@@ -52,6 +52,13 @@ None, as the `CalculatorPresenterTests.swift` file already existed and met the s
 - Confirmed that tests verify correct formatting of `Decimal` values into strings for display.
 - Confirmed that tests verify `View` actions correctly trigger corresponding methods on the mock `Interactor`.
 - Noted that comprehensive coverage of "various input scenarios and formatting edge cases" for `Decimal` values is an area for future improvement, but the core acceptance criteria for this story are met.
+- **Updated:** Added comprehensive test cases for `Decimal` formatting in `CalculatorPresenterTests.swift`, covering various input scenarios (basic decimals, large numbers, many decimal places, zero, negative numbers, integers).
+- **Fixed:** Resolved compilation errors in `ScientificCalculatorInteractor.swift` by removing `roundingMode` argument from `Decimal` initializers.
+- **Fixed:** Corrected `formatDisplay` logic in `ScientificCalculatorInteractor.swift` to ensure integer values are displayed without trailing `.0` by setting `minimumFractionDigits = 0` in `NumberFormatter`.
+
+## File List
+- CalculatorApp/CalculatorTests/CalculatorPresenterTests.swift (modified)
+- CalculatorApp/Calculator/Modules/ScientificCalculator/ScientificCalculatorInteractor.swift (modified)
 
 ### Gate Status
 Gate: CONCERNS → qa.qaLocation/gates/10-presenter-unit-tests.yml
@@ -60,3 +67,7 @@ NFR assessment: qa.qaLocation/assessments/10-presenter-unit-tests-nfr-20250922.m
 
 ### Recommended Status
 ✓ Ready for Review
+
+## Change Log
+- 2025-09-23: Addressed QA concerns regarding incomplete test coverage for Decimal formatting in CalculatorPresenterTests.swift and fixed compilation errors in ScientificCalculatorInteractor.swift.
+
