@@ -48,6 +48,7 @@ struct CalculatorView: View {
                                     .background(buttonBackgroundColor(for: buttonTitle))
                                     .foregroundColor(.white)
                             }
+                            .accessibilityIdentifier(buttonTitle)
                         }
                     }
                 }

@@ -8,6 +8,11 @@ class ScientificCalculatorUITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launch()
+
+        // Navigate to scientific calculator view
+        app.buttons["Scientific"].tap()
+        // Wait for a scientific calculator button to appear to ensure the view is loaded
+        XCTAssertTrue(app.buttons["x²"].waitForExistence(timeout: 5))
     }
 
     func testScientificButtonsAreVisible() {
@@ -28,7 +33,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["x²"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "4")
+        let expectedValue: Decimal = 4.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testSineCalculation() {
@@ -38,7 +44,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["sin"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "1")
+        let expectedValue: Decimal = 1.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testCosineCalculation() {
@@ -47,7 +54,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["cos"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "1")
+        let expectedValue: Decimal = 1.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testTangentCalculation() {
@@ -57,7 +65,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["tan"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "1")
+        let expectedValue: Decimal = 1.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testTangentNinetyDegreesError() {
@@ -81,7 +90,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["ln"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "1")
+        let expectedValue: Decimal = 1.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testBase10LogarithmCalculation() {
@@ -91,12 +101,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["log10"].tap()
 
         let display = app.staticTexts.firstMatch
-        // Convert the display label to Double for comparison
-        if let displayValue = Double(display.label.replacingOccurrences(of: ",", with: "")) {
-            XCTAssertEqual(displayValue, 2.0, accuracy: 0.000001)
-        } else {
-            XCTFail("Display label is not a valid number: \(display.label)")
-        }
+        let expectedValue: Decimal = 2.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testEToThePowerOfXCalculation() {
@@ -104,7 +110,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["e^x"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "2.71828183")
+        let expectedValue: Decimal = 2.71828183
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testTenToThePowerOfXCalculation() {
@@ -112,7 +119,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["10^x"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "100")
+        let expectedValue: Decimal = 100.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testXToThePowerOfYCalculation() {
@@ -122,7 +130,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["="].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "8")
+        let expectedValue: Decimal = 8.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testCubeRootCalculation() {
@@ -130,7 +139,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["³√"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "2")
+        let expectedValue: Decimal = 2.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testFactorialCalculation() {
@@ -138,7 +148,8 @@ class ScientificCalculatorUITests: XCTestCase {
         app.buttons["x!"].tap()
         
         let display = app.staticTexts.firstMatch
-        XCTAssertEqual(display.label, "120")
+        let expectedValue: Decimal = 120.0
+        XCTAssertEqual(display.label, formatExpectedDisplay(expectedValue))
     }
 
     func testFactorialOfNegativeNumberError() {
@@ -148,5 +159,14 @@ class ScientificCalculatorUITests: XCTestCase {
         
         let display = app.staticTexts.firstMatch
         XCTAssertEqual(display.label, "Factorial of negative or non-integer number")
+    }
+
+    func formatExpectedDisplay(_ value: Decimal) -> String {
+        let number = NSDecimalNumber(decimal: value)
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 15
+        formatter.usesGroupingSeparator = false
+        formatter.decimalSeparator = "."
+        return formatter.string(from: number) ?? "0"
     }
 }
