@@ -1,0 +1,19 @@
+risk_summary:
+  totals:
+    critical: 0
+    high: 4
+    medium: 0
+    low: 2
+  highest:
+    id: SEC-001
+    score: 6
+    title: 'Insecure Password Storage/Hashing'
+  recommendations:
+    must_fix:
+      - 'Ensure Passlib[bcrypt] is configured with appropriate work factors and salting.'
+      - 'Use strong, randomly generated secret keys for JWT signing and implement proper expiration/renewal.'
+      - 'Implement comprehensive input validation using Pydantic schemas and sanitize all user-provided inputs.'
+      - 'Implement a centralized logging policy that explicitly forbids logging of sensitive data.'
+    monitor:
+      - 'Monitor database query performance for user lookups and consider caching if needed.'
+      - 'Ensure unique constraints are enforced at both database and application levels for email/username.'

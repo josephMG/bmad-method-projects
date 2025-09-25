@@ -1,0 +1,35 @@
+FROM python:3.11-slim-bookworm
+
+WORKDIR /app
+RUN pip install uv
+
+# Create and activate a virtual environment
+RUN uv venv
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Copy dependency files and install dependencies into the venv
+COPY ./pyproject.toml /app/
+RUN uv pip install .
+
+# Install postgresql-client for debugging
+RUN apt-get update && apt-get install -y postgresql-client
+
+# Copy the rest of the application code
+COPY ./app /app/app
+COPY ./alembic /app/alembic
+COPY ./alembic.ini /app/
+COPY ./main.py /app/
+COPY ./scripts/wait-for-it.sh /app/scripts/wait-for-it.sh
+COPY ./scripts/check_db.py /app/scripts/check_db.py
+COPY ./entrypoint.sh /app/entrypoint.sh
+
+# Make scripts executable
+RUN chmod +x /app/scripts/wait-for-it.sh
+RUN chmod +x /app/scripts/check_db.py
+RUN chmod +x /app/entrypoint.sh
+
+# Copy tests after all other code to ensure latest version
+COPY ./tests /app/tests
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["/app/.venv/bin/pytest", "tests/unit", "tests/integration"]
