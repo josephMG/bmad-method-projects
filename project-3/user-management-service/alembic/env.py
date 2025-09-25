@@ -1,9 +1,14 @@
+import sys
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-from app.db.session import Base  # Import your Base from session.py
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from app.db.base import Base  # Import your Base from base.py
 from app.models.user import User  # Import your models here # noqa: F401
 
 # this is the Alembic Config object, which provides
@@ -12,7 +17,7 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-fileConfig(config.config_file_name)
+# fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -54,6 +59,7 @@ def run_migrations_online():
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        url=os.environ.get("DATABASE_URL"),
     )
 
     with connectable.connect() as connection:
