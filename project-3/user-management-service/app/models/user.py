@@ -1,14 +1,14 @@
+"""SQLAlchemy ORM model for User.
 """
-SQLAlchemy ORM model for User.
-"""
-from sqlalchemy import (Column, String, Boolean, DateTime, func, Uuid)
-from app.db.base import Base
 import uuid
-from datetime import datetime
+
+from sqlalchemy import Boolean, Column, DateTime, String, Uuid, func
+
+from app.db.base import Base
+
 
 class User(Base):
-    """
-    User model for the database.
+    """User model for the database.
     """
     __tablename__ = "users"
 
@@ -22,3 +22,4 @@ class User(Base):
     deleted_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
+    deletion_requested_at = Column(DateTime, nullable=True)

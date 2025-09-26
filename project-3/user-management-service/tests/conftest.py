@@ -1,14 +1,11 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytest
-
-from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.core.config import settings
 from app.core.security import get_password_hash
 from app.db.base import Base
 from app.db.session import get_db
@@ -20,7 +17,7 @@ engine = create_engine(
     os.environ.get(
         "DATABASE_URL",
         "postgresql://user:password@db:5432/test_user_management_db",
-    )
+    ),
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -49,7 +46,7 @@ def test_db(db_engine):
 async def client(test_db):
     app.dependency_overrides[get_db] = lambda: test_db
     async with AsyncClient(
-        transport=ASGITransport(app=app), base_url="http://test"
+        transport=ASGITransport(app=app), base_url="http://test",
     ) as ac:
         yield ac
     app.dependency_overrides.clear()

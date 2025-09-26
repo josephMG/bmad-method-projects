@@ -1,8 +1,11 @@
-import pytest
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
+
+import pytest
+
 from app.core import security
-from app.core.config import settings # Import settings to patch it
+from app.core.config import settings  # Import settings to patch it
+
 
 # Patch settings for consistent testing
 @pytest.fixture(autouse=True)
@@ -34,10 +37,10 @@ def test_create_access_token():
     assert "exp" in decoded_token
 
     # Check expiration time
-    expiration_time = datetime.fromtimestamp(decoded_token["exp"], tz=timezone.utc)
+    expiration_time = datetime.fromtimestamp(decoded_token["exp"], tz=UTC)
     # Allow a small delta for execution time
-    assert expiration_time > datetime.now(timezone.utc) + timedelta(minutes=59)
-    assert expiration_time < datetime.now(timezone.utc) + timedelta(minutes=61)
+    assert expiration_time > datetime.now(UTC) + timedelta(minutes=59)
+    assert expiration_time < datetime.now(UTC) + timedelta(minutes=61)
 
 def test_create_access_token_with_custom_expiry():
     data = {"sub": "testuser"}
@@ -45,8 +48,8 @@ def test_create_access_token_with_custom_expiry():
     token = security.create_access_token(data, expires_delta=expires_delta)
 
     decoded_token = security.jwt.decode(token, settings.SECRET_KEY, algorithms=[security.ALGORITHM])
-    expiration_time = datetime.fromtimestamp(decoded_token["exp"], tz=timezone.utc)
+    expiration_time = datetime.fromtimestamp(decoded_token["exp"], tz=UTC)
 
     # Check expiration time with custom delta
-    assert expiration_time > datetime.now(timezone.utc) + timedelta(minutes=4)
-    assert expiration_time < datetime.now(timezone.utc) + timedelta(minutes=6)
+    assert expiration_time > datetime.now(UTC) + timedelta(minutes=4)
+    assert expiration_time < datetime.now(UTC) + timedelta(minutes=6)

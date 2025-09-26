@@ -1,12 +1,11 @@
-import sys
 import os
-from logging.config import fileConfig
+import sys
 
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from app.db.base import Base  # Import your Base from base.py
 from app.models.user import User  # Import your models here # noqa: F401

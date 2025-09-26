@@ -1,4 +1,3 @@
-import pytest
 
 # RED: Write a failing test first
 def test_add_two_numbers_red():

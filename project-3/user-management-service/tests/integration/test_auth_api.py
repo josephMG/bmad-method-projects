@@ -1,32 +1,34 @@
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.orm import Session
+
+from app.core.security import verify_password
 from app.models.user import User
-from app.core.security import get_password_hash, verify_password
+
 
 # Helper function to register and login a user
 async def register_and_login_user(client: AsyncClient, test_db: Session, email: str, username: str, password: str):
     user_data = {
         "email": email,
         "username": username,
-        "password": password
+        "password": password,
     }
     await client.post("/api/v1/register", json=user_data)
 
     login_data = {
         "username": username,
-        "password": password
+        "password": password,
     }
     response = await client.post("/api/v1/token", data=login_data)
     return response.json()["access_token"]
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_register_user_success(client: AsyncClient, test_db: Session):
     user_data = {
         "email": "test_integration@example.com",
         "username": "test_integration_user",
         "password": "SecurePassword123",
-        "full_name": "Test Integration User"
+        "full_name": "Test Integration User",
     }
     response = await client.post("/api/v1/register", json=user_data)
 
@@ -48,13 +50,13 @@ async def test_register_user_success(client: AsyncClient, test_db: Session):
     assert user_in_db.hashed_password is not None
     assert user_in_db.full_name == user_data["full_name"]
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_register_user_email_exists(client: AsyncClient, test_db: Session):
     # First, register a user
     user_data = {
         "email": "existing_email@example.com",
         "username": "unique_user_for_email_test",
-        "password": "SecurePassword123"
+        "password": "SecurePassword123",
     }
     await client.post("/api/v1/register", json=user_data)
 
@@ -62,20 +64,20 @@ async def test_register_user_email_exists(client: AsyncClient, test_db: Session)
     duplicate_user_data = {
         "email": "existing_email@example.com",
         "username": "another_user",
-        "password": "AnotherSecurePassword"
+        "password": "AnotherSecurePassword",
     }
     response = await client.post("/api/v1/register", json=duplicate_user_data)
 
     assert response.status_code == 400
     assert response.json()["detail"] == "Email already registered"
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_register_user_username_exists(client: AsyncClient, test_db: Session):
     # First, register a user
     user_data = {
         "email": "unique_email_for_username_test@example.com",
         "username": "existing_username",
-        "password": "SecurePassword123"
+        "password": "SecurePassword123",
     }
     await client.post("/api/v1/register", json=user_data)
 
@@ -83,47 +85,47 @@ async def test_register_user_username_exists(client: AsyncClient, test_db: Sessi
     duplicate_user_data = {
         "email": "another_email@example.com",
         "username": "existing_username",
-        "password": "AnotherSecurePassword"
+        "password": "AnotherSecurePassword",
     }
     response = await client.post("/api/v1/register", json=duplicate_user_data)
 
     assert response.status_code == 400
     assert response.json()["detail"] == "Username already registered"
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_register_user_invalid_email(client: AsyncClient):
     user_data = {
         "email": "invalid-email",
         "username": "testuser",
-        "password": "SecurePassword123"
+        "password": "SecurePassword123",
     }
     response = await client.post("/api/v1/register", json=user_data)
     assert response.status_code == 422 # Unprocessable Entity for Pydantic validation error
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_register_user_short_password(client: AsyncClient):
     user_data = {
         "email": "test@example.com",
         "username": "testuser",
-        "password": "short" # Min length is 8
+        "password": "short", # Min length is 8
     }
     response = await client.post("/api/v1/register", json=user_data)
     assert response.status_code == 422 # Unprocessable Entity for Pydantic validation error
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_login_for_access_token_success(client: AsyncClient, test_db: Session):
     # First, register a user to log in with
     user_data = {
         "email": "login_test@example.com",
         "username": "login_user",
-        "password": "LoginSecurePassword123"
+        "password": "LoginSecurePassword123",
     }
     await client.post("/api/v1/register", json=user_data)
 
     # Now, attempt to log in
     login_data = {
         "username": user_data["username"],
-        "password": user_data["password"]
+        "password": user_data["password"],
     }
     response = await client.post("/api/v1/token", data=login_data)
 
@@ -134,39 +136,39 @@ async def test_login_for_access_token_success(client: AsyncClient, test_db: Sess
     assert isinstance(token_data["access_token"], str)
     assert len(token_data["access_token"]) > 0
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_login_for_access_token_incorrect_password(client: AsyncClient, test_db: Session):
     # First, register a user
     user_data = {
         "email": "wrong_pass@example.com",
         "username": "wrong_pass_user",
-        "password": "CorrectPassword123"
+        "password": "CorrectPassword123",
     }
     await client.post("/api/v1/register", json=user_data)
 
     # Attempt to log in with incorrect password
     login_data = {
         "username": user_data["username"],
-        "password": "IncorrectPassword"
+        "password": "IncorrectPassword",
     }
     response = await client.post("/api/v1/token", data=login_data)
 
     assert response.status_code == 401
     assert response.json()["detail"] == "Incorrect username or password"
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_login_for_access_token_non_existent_user(client: AsyncClient):
     # Attempt to log in with a non-existent user
     login_data = {
         "username": "non_existent_user",
-        "password": "AnyPassword123"
+        "password": "AnyPassword123",
     }
     response = await client.post("/api/v1/token", data=login_data)
 
     assert response.status_code == 401
     assert response.json()["detail"] == "Incorrect username or password"
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_change_password_success(client: AsyncClient, test_db: Session):
     # Register and login a user
     email = "change_pass_user@example.com"
@@ -184,12 +186,12 @@ async def test_change_password_success(client: AsyncClient, test_db: Session):
     # Attempt to change password
     password_update_data = {
         "current_password": old_password,
-        "new_password": new_password
+        "new_password": new_password,
     }
     response = await client.put(
         "/api/v1/users/me/password",
         json=password_update_data,
-        headers={"Authorization": f"Bearer {access_token}"}
+        headers={"Authorization": f"Bearer {access_token}"},
     )
 
     assert response.status_code == 204
@@ -203,7 +205,7 @@ async def test_change_password_success(client: AsyncClient, test_db: Session):
     # Try to login with old password (should fail)
     login_data_old = {
         "username": username,
-        "password": old_password
+        "password": old_password,
     }
     response_old_login = await client.post("/api/v1/token", data=login_data_old)
     assert response_old_login.status_code == 401
@@ -211,13 +213,13 @@ async def test_change_password_success(client: AsyncClient, test_db: Session):
     # Try to login with new password (should succeed)
     login_data_new = {
         "username": username,
-        "password": new_password
+        "password": new_password,
     }
     response_new_login = await client.post("/api/v1/token", data=login_data_new)
     assert response_new_login.status_code == 200
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_change_password_incorrect_current_password(client: AsyncClient, test_db: Session):
     # Register and login a user
     email = "incorrect_pass_user@example.com"
@@ -230,12 +232,12 @@ async def test_change_password_incorrect_current_password(client: AsyncClient, t
     # Attempt to change password with incorrect current password
     password_update_data = {
         "current_password": "WrongOldPassword",
-        "new_password": new_password
+        "new_password": new_password,
     }
     response = await client.put(
         "/api/v1/users/me/password",
         json=password_update_data,
-        headers={"Authorization": f"Bearer {access_token}"}
+        headers={"Authorization": f"Bearer {access_token}"},
     )
 
     assert response.status_code == 400
@@ -247,15 +249,15 @@ async def test_change_password_incorrect_current_password(client: AsyncClient, t
     assert verify_password(old_password, user_in_db.hashed_password) is True
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio()
 async def test_change_password_unauthenticated(client: AsyncClient):
     password_update_data = {
         "current_password": "AnyPassword",
-        "new_password": "NewPassword"
+        "new_password": "NewPassword",
     }
     response = await client.put(
         "/api/v1/users/me/password",
-        json=password_update_data
+        json=password_update_data,
     )
     assert response.status_code == 401
     assert response.json()["detail"] == "Not authenticated"

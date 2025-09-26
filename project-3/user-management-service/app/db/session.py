@@ -1,16 +1,15 @@
-"""
-Database session management.
+"""Database session management.
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from app.core.config import settings
 
 engine = create_engine(settings.DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():
-    """
-    FastAPI dependency to get a database session.
+    """FastAPI dependency to get a database session.
     """
     db = SessionLocal()
     try:

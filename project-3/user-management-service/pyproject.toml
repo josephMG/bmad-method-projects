@@ -44,6 +44,11 @@ ignore = ["D100", "D104", "D105", "D107", "ANN101", "ANN002", "ANN003", "ANN401"
 [tool.ruff.pydocstyle]
 convention = "google"
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+namespaces = false
+
 [tool.pytest.ini_options]
 pythonpath = [".", "app"]
 addopts = "--strict-markers --strict-config"

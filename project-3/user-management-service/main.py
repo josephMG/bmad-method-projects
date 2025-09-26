@@ -2,7 +2,6 @@ from fastapi import FastAPI
 
 from app.api.v1.endpoints import auth, users
 from app.db.base import Base  # noqa
-from app.db.session import engine
 from app.models import user  # noqa
 
 # Create all tables in the database
