@@ -25,5 +25,10 @@
 | **Package Manager** | uv | ~0.1.15 | Python package management | An extremely fast and modern package manager for Python. |
 | **Database** | PostgreSQL | 16 | Relational database | Powerful, open-source, and reliable object-relational database system. |
 | **Infrastructure** | Docker & Docker Compose | latest | Containerization | To create, deploy, and run the application in isolated containers for consistency. |
+| **Frontend** | Next.js | latest | React framework for frontend | Provides server-side rendering, static site generation, and a great developer experience for React applications. |
+| **Frontend UI** | Material-UI | latest | React UI component library | Comprehensive suite of UI tools to implement Google's Material Design. |
+| **Frontend State** | Redux Toolkit | latest | State management for React | Official opinionated toolset for efficient Redux development. |
+| **Frontend Data Fetching** | RTK Query | latest | Data fetching and caching for Redux | Built on Redux Toolkit, simplifies data fetching, caching, and invalidation. |
+| **Frontend HTTP Client** | Axios | latest | Promise-based HTTP client | Widely used for making HTTP requests from the browser and Node.js. |
 
 ---

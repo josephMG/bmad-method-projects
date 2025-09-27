@@ -1,0 +1,7 @@
+schema: 1
+story: '2.1'
+story_title: 'Next.js Frontend Dockerization and Docker-compose Integration'
+gate: PASS
+status_reason: 'The implementation meets all acceptance criteria and follows best practices.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-09-27T16:45:00Z'

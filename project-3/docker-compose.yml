@@ -14,11 +14,11 @@ services:
 
   app:
     build:
-      context: .
+      context: ./user-management-service
       dockerfile: Dockerfile
 
     volumes:
-      - .:/app
+      - ./user-management-service:/app
     ports:
       - "8000:8000"
     environment:
@@ -31,17 +31,40 @@ services:
 
   test:
     build:
-      context: .
+      context: ./user-management-service
       dockerfile: Dockerfile.test
     volumes:
-      - .:/app  # Add this line
+      - ./user-management-service:/app # Add this line
     environment:
       DATABASE_URL: postgresql://user:password@db:5432/test_user_management_db
       POSTGRES_PASSWORD: password
       PGPASSWORD: password
+    profiles: ["test"]
     depends_on:
       - db
 
+  nextjs-frontend:
+    build:
+      context: ./nextjs-frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./nextjs-frontend:/app
+      - ./nextjs-frontend/node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://app:8000/api/v1
+    depends_on:
+      - app
+
+  nextjs-frontend-test:
+    build:
+      context: ./nextjs-frontend
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./nextjs-frontend:/app
+      - /app/node_modules
+    profiles: ["test"]
+
 volumes:
   postgres_data:
-
