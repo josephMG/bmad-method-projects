@@ -91,6 +91,12 @@ paths:
       tags: [Users]
       security:
         - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDelete'
       responses:
         '204':
           description: User account deleted successfully
