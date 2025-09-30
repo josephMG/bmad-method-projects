@@ -53,6 +53,7 @@ This section details the key user flows and journeys within the `nextjs-frontend
    - **System:** Backend authenticates user, returns JWT on success, or error.
    - **Frontend:** Stores JWT securely, displays success message or error.
    - **End:** Redirects to dashboard/home page on success.
+   *Implementation Note: The `LoginForm` component (`nextjs-frontend/src/components/auth/LoginForm.tsx`) handles this flow, including client-side validation, API interaction via RTK Query, secure JWT handling, and redirection.*
 
 **3. User Profile Management Flow:**
    - **Start:** Logged-in user navigates to `/dashboard/settings/profile`.
@@ -64,7 +65,7 @@ This section details the key user flows and journeys within the `nextjs-frontend
    - **System:** Frontend sends PUT/PATCH request to `/api/v1/users/me`.
    - **System:** Backend updates profile, returns updated user data or error.
    - **Frontend:** Displays success message or error, updates displayed profile.
-   - **End:** Profile updated.
+   *Implementation Note: The `ProfileForm` component (`nextjs-frontend/src/components/profile/ProfileForm.tsx`) handles this flow, including client-side validation, API interaction via RTK Query, and displaying feedback.*
 
 **4. Change Password Flow:**
    - **Start:** Logged-in user navigates to `/dashboard/settings/change-password`.
@@ -78,9 +79,10 @@ This section details the key user flows and journeys within the `nextjs-frontend
 
 **5. Delete Account Flow:**
    - **Start:** Logged-in user navigates to `/dashboard/settings/delete-account`.
-   - **Frontend:** Displays warning about account deletion and confirmation prompt.
-   - **Action:** User confirms intention to delete (e.g., re-enters password).
-   - **Action:** User submits deletion request.
+   - **Frontend:** Displays warning about account deletion and a confirmation dialog/page.
+   - **Action:** User explicitly confirms intention to delete the account by re-entering their password.
+   - **Action (Cancellation):** If the user chooses to cancel (e.g., by clicking a "Cancel" button or navigating away), the deletion process is aborted, and they are returned to the previous page/settings section.
+   - **Action (Submission):** User submits deletion request after re-entering password.
    - **System:** Frontend sends DELETE request to `/api/v1/users/me`.
    - **System:** Backend marks account for deletion, returns success/error.
    - **Frontend:** Displays success message or error.
@@ -152,6 +154,28 @@ This section details the accessibility and usability requirements for the `nextj
 - Accessibility testing will be integrated into the QA process.
 - Developers will be trained on WCAG 2.1 AA guidelines.
 - Design tools will support accessibility checks and annotations.
+
+## UI/UX Validation and Approval Process
+
+This section outlines the process for validating and approving the UI/UX design and implementation.
+
+**Process Steps:**
+1.  **Design Review:** UI/UX designs (wireframes, mockups, prototypes) are reviewed by product owners, stakeholders, and a dedicated UI/UX expert. Feedback is collected and incorporated.
+2.  **Accessibility Audit:** Designs and implemented components undergo an accessibility audit to ensure compliance with WCAG 2.1 AA standards. This includes automated checks and manual testing (e.g., keyboard navigation, screen reader compatibility).
+3.  **Usability Testing:** User testing sessions are conducted with target users to gather feedback on the intuitiveness, efficiency, and overall user satisfaction of the interface.
+4.  **Stakeholder Approval:** Once design and implementation meet all functional, non-functional, and accessibility requirements, formal approval is obtained from product owners and key stakeholders.
+5.  **Regression Testing:** After any code changes or new feature implementations, UI/UX elements are re-tested to ensure no regressions have been introduced.
+
+**Tools and Resources:**
+-   **Design Tools:** Figma, Sketch, Adobe XD for design and prototyping.
+-   **Accessibility Tools:** Lighthouse, Axe DevTools, manual screen reader testing (e.g., VoiceOver, NVDA).
+-   **Usability Testing Platforms:** UserTesting, Lookback.
+
+**Approval Criteria:**
+-   All critical and high-priority design feedback addressed.
+-   Full compliance with WCAG 2.1 AA accessibility standards.
+-   Positive results from usability testing.
+-   Alignment with product vision and user needs.
 
 ## Performance Optimization
 

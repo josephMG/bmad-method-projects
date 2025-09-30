@@ -48,10 +48,17 @@ export const authApi = createApi({
     getProfile: builder.query<{ id: string; email: string }, void>({
       query: () => '/users/me', // Assuming /api/v1/users/me is the full path
     }),
+    register: builder.mutation<any, any>({ // Define appropriate types for request and response
+      query: (userData) => ({
+        url: '/register', // Assuming /api/v1/register is the full path
+        method: 'POST',
+        body: userData,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetProfileQuery } = authApi;
+export const { useLoginMutation, useGetProfileQuery, useRegisterMutation } = authApi;
 ```
 
 ### API Client Configuration

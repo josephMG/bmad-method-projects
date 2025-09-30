@@ -10,26 +10,38 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.9.0",
+    "@mui/material": "^5.16.4",
+    "@reduxjs/toolkit": "^2.9.0",
+    "axios": "^1.12.2",
+    "next": "15.5.4",
+    "node-abort-controller": "^3.1.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.4"
+    "react-hook-form": "^7.52.1",
+    "react-redux": "^9.2.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/ui": "^1.6.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
-    "@eslint/eslintrc": "^3",
-    "vitest": "^1.6.0",
-    "@vitest/ui": "^1.6.0",
-    "@vitejs/plugin-react": "^4.3.1",
     "jsdom": "^24.1.0",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/jest-dom": "^6.4.6",
-    "vite-tsconfig-paths": "^4.3.2"
+    "msw": "^2.11.3",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.6.0"
   }
 }

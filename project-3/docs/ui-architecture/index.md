@@ -26,3 +26,7 @@ Focused on areas relevant to: stories 2.1-2.6 (Next.js Frontend Dockerization, U
 - [Testing Requirements](./testing-requirements.md)
 - [Environment Configuration](./environment-configuration.md)
 - [Frontend Developer Standards](./frontend-developer-standards.md)
+- [Authentication Components](./authentication-components.md)
+- [User Profile Management Components](./user-profile-components.md)
+- [Change Password Components](./change-password-components.md)
+- [Delete Account Components](./delete-account-components.md)

@@ -10,6 +10,8 @@ COPY ./pyproject.toml /app/
 RUN uv sync
 RUN uv pip install ruff
 
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Copy the rest of the application code
 COPY ./app /app/app
 COPY ./alembic /app/alembic
