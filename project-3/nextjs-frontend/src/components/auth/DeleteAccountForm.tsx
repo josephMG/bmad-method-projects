@@ -60,9 +60,8 @@ const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({
       </Typography>
       <Typography
         variant="body2"
-        color="text.secondary"
         align="center"
-        sx={{ mb: 2 }}
+        sx={{ mb: 2, color: 'text.secondary' }}
       >
         Are you sure you want to delete your account? This action cannot be
         undone. Please re-enter your password to confirm.

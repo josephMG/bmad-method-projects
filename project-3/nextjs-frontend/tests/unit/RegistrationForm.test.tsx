@@ -241,6 +241,21 @@ describe("RegistrationForm", () => {
   });
 
   it("prevents XSS attacks by sanitizing user input", async () => {
+    const originalWarn = console.warn;
+    console.warn = (...args) => {
+      if (args[0] && typeof args[0] === 'string' && args[0].includes('[MSW] Warning: intercepted a request without a matching request handler:')) {
+        return; // Suppress MSW warning
+      }
+      originalWarn(...args);
+    };
+
+    server.use(
+      http.post("http://localhost:8000/api/v1/register", async ({ request }) => {
+        // Explicitly acknowledge and ignore the request body for this test.
+        // This handler will match any POST request to this URL.
+        return HttpResponse.json({ message: "User registered successfully" });
+      }),
+    );
     render(
       <ReduxProvider>
         <RegistrationForm />
@@ -270,6 +285,8 @@ describe("RegistrationForm", () => {
 
     // Also check if the input field itself has sanitized the value (though React usually handles this)
     // expect(usernameInput).not.toHaveValue(maliciousInput);
+
+    console.warn = originalWarn; // Restore original console.warn
   });
 
   // AC: Accessibility - Keyboard Navigation & ARIA Attributes
@@ -314,4 +331,3 @@ describe("RegistrationForm", () => {
     expect(registerButton).toHaveFocus();
   });
 });
-

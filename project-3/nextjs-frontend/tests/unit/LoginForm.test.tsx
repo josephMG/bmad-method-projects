@@ -208,8 +208,8 @@ describe('LoginForm', () => {
     expect(emailInput).toHaveAccessibleName(/email address/i);
     expect(passwordInput).toHaveAccessibleName(/password/i);
 
-    // Initial focus should be on the email input
-    emailInput.focus();
+    // Start tabbing from the beginning of the document
+    await user.tab();
     expect(emailInput).toHaveFocus();
 
     // Tab to password input

@@ -1,15 +1,18 @@
 import "@testing-library/jest-dom";
 import { server } from "./tests/server";
 import { vi } from "vitest";
-
-// Polyfill AbortController for older Node.js versions or environments where it might be missing/incompatible
 import { AbortController } from "node-abort-controller";
-if (typeof global.AbortController === "undefined") {
-  global.AbortController = AbortController;
-}
-if (typeof global.AbortSignal === "undefined") {
-  global.AbortSignal = AbortController.AbortSignal;
-}
+
+global.AbortController = AbortController;
+
+// Global MSW warning suppression
+const originalConsoleWarn = console.warn;
+console.warn = (...args) => {
+  if (args[0] && typeof args[0] === 'string' && args[0].includes('[MSW] Warning: intercepted a request without a matching request handler:')) {
+    return; // Suppress MSW warning
+  }
+  originalConsoleWarn(...args);
+};
 
 // Mock Redux-related modules globally
 
@@ -22,6 +25,20 @@ vi.mock("next/navigation", () => ({
     push: vi.fn(),
   }),
 }));
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

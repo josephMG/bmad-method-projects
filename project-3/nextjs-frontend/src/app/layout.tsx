@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/store/provider";
+import ThemeProvider from "./ThemeProvider";
+import EmotionCacheProvider from "./EmotionCache"; // Added import
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReduxProvider>{children}</ReduxProvider>
+        <EmotionCacheProvider options={{ key: 'mui' }}> {/* Added EmotionCacheProvider */}
+          <ReduxProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </ReduxProvider>
+        </EmotionCacheProvider>
       </body>
     </html>
   );

@@ -43,6 +43,7 @@ This epic outlines the development and integration of a new Next.js frontend app
 *   [User Profile Management Frontend](stories/2.4.user-profile-management-frontend.story.md)
 *   [Change Password Frontend](stories/2.5.change-password-frontend.story.md)
 *   [Delete User Account Frontend](stories/2.6.delete-user-account-frontend.story.md)
+*   [Dark Mode Toggle](stories/2.7.dark-mode-toggle.story.md)
 
 ## 5. Technical Considerations
 

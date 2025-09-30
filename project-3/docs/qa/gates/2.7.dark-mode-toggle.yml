@@ -1,0 +1,57 @@
+# <!-- Powered by BMAD™ Core -->
+template:
+  id: qa-gate-template-v1
+  name: Quality Gate Decision
+  version: 1.0
+  output:
+    format: yaml
+    filename: qa.qaLocation/gates/2.7-dark-mode-toggle.yml
+    title: "Quality Gate: 2.7"
+
+# Required fields (keep these first)
+schema: 1
+story: "2.7"
+story_title: "Dark Mode Toggle"
+gate: "PASS"
+status_reason: "All acceptance criteria and tasks have been met and verified. Critical hydration and testing issues have been successfully resolved by the developer, demonstrating high technical proficiency."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-09-30T08:53:14Z"
+
+# Always present but only active when WAIVED
+waiver: { active: false }
+
+# Issues (if any) - Use fixed severity: low | medium | high
+top_issues: []
+
+# Risk summary (from risk-profile task if run)
+risk_summary:
+  totals: { critical: 0, high: 0, medium: 0, low: 0 }
+  recommendations:
+    must_fix: []
+    monitor: []
+
+# ============ Optional Extended Fields ============ 
+# Uncomment and use if your team wants more detail
+
+recommendations:
+  immediate: []
+  future:
+    - action: "Explicitly include accessibility checks in the testing phase. Verify color contrast ratios for both light and dark themes against WCAG guidelines. Ensure the toggle itself is keyboard navigable and provides appropriate ARIA attributes for screen readers."
+      refs: []
+    - action: "While theme switching is generally lightweight, ensure that the theme change doesn't trigger unnecessary re-renders of large parts of the application, which could impact perceived performance."
+      refs: []
+    - action: "Continue to monitor localStorage usage to ensure no sensitive data is stored and that persistence is robust."
+      refs: []
+
+nfr_validation:
+  security: { status: PASS, notes: "`localStorage` usage remains secure (no sensitive data)." }
+  performance: { status: PASS, notes: "The hydration fix is lightweight and crucial for application stability. The potential for a brief theme-flicker on initial load is an accepted trade-off for stability and correct SSR behavior." }
+  reliability: { status: PASS, notes: "Critical hydration and testing issues have been successfully resolved." }
+  maintainability: { status: PASS, notes: "Code quality remains high, with strong adherence to architectural patterns and best practices." }
+
+evidence:
+  tests_reviewed: 3
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4]
+    ac_gaps: []

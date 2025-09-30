@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Alert } from "@mui/material";
@@ -20,7 +20,8 @@ export default function LoginForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const [loginUser, { isLoading, isSuccess, isError, error }] = useLoginMutation();
+  const [loginUser, { isLoading, isSuccess, isError, error }] =
+    useLoginMutation();
 
   const {
     register,
@@ -89,9 +90,8 @@ export default function LoginForm() {
         fullWidth
         id="email"
         label="Email Address"
-        name="email"
         autoComplete="email"
-        autoFocus
+        // autoFocus // Removed to prevent hydration mismatch with data-shrink attribute
         aria-label="Email Address"
         {...register("email")}
         error={!!errors.email}
@@ -102,7 +102,6 @@ export default function LoginForm() {
         margin="normal"
         required
         fullWidth
-        name="password"
         label="Password"
         type="password"
         id="password"

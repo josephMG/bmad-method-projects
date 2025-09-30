@@ -10,6 +10,12 @@ export default defineConfig({
     setupFiles: './vitest.setup.ts',
     env: {
       NEXT_PUBLIC_API_BASE_URL: 'http://localhost:8000/api/v1',
-    }
+    },
+    deps: {
+      inline: [
+        /@mswjs\/interceptors/,
+        /@mui\/icons-material\/.*/,
+      ],
+    },
   },
 });
