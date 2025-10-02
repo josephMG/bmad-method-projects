@@ -29,11 +29,20 @@ export const authApi = createApi({
       },
       any
     >({
-      query: (credentials) => ({
-        url: "/token",
-        method: "POST",
-        body: credentials,
-      }),
+        query: (credentials) => {
+          const formBody = new URLSearchParams();
+          formBody.append("username", credentials.username);
+          formBody.append("password", credentials.password);
+
+          return {
+            url: "/token",
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: formBody.toString(),
+          };
+        },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

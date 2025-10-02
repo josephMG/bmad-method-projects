@@ -18,7 +18,15 @@ describe("RegistrationForm Integration", () => {
   it("successfully registers a user and redirects", async () => {
     server.use(
       http.post("http://localhost:8000/api/v1/register", () => {
-        return HttpResponse.json({ message: "User registered successfully" });
+        return HttpResponse.json({
+          id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+          email: "integration@example.com",
+          username: "integrationuser",
+          full_name: null,
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
       }),
     );
 
@@ -68,7 +76,7 @@ describe("RegistrationForm Integration", () => {
     server.use(
       http.post("http://localhost:8000/api/v1/register", () => {
         return new HttpResponse(
-          JSON.stringify({ detail: "Integration email already registered" }),
+          JSON.stringify({ detail: "Email already registered" }),
           { status: 400 },
         );
       }),
@@ -99,7 +107,7 @@ describe("RegistrationForm Integration", () => {
     await waitFor(() => {
       const alertElement = screen.getByRole("alert");
       expect(alertElement.textContent).toMatch(
-        /integration email already registered/i,
+        /email already registered/i,
       );
     });
   });

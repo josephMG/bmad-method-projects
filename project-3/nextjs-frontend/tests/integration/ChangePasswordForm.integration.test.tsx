@@ -44,7 +44,7 @@ const handlers = [
     if (data.current_password === 'wrong_password') {
       return HttpResponse.json({ detail: 'Incorrect current password' }, { status: 400 });
     }
-    return HttpResponse.json({}, { status: 200 });
+      return HttpResponse.json({}, { status: 204 });
   }),
 ];
 

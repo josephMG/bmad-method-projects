@@ -44,6 +44,7 @@ This epic outlines the development and integration of a new Next.js frontend app
 *   [Change Password Frontend](stories/2.5.change-password-frontend.story.md)
 *   [Delete User Account Frontend](stories/2.6.delete-user-account-frontend.story.md)
 *   [Dark Mode Toggle](stories/2.7.dark-mode-toggle.story.md)
+*   [Frontend Mock API Alignment for User Management](stories/2.8.frontend-mock-api-alignment.story.md)
 
 ## 5. Technical Considerations
 

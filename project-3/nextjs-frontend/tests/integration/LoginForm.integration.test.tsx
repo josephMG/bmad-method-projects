@@ -67,7 +67,7 @@ describe('LoginForm Integration', () => {
 
     render(<ReduxProvider><LoginForm /></ReduxProvider>);
 
-    await userEvent.type(screen.getByRole('textbox', { name: /email address/i }), 'test@example.com');
+    await userEvent.type(screen.getByRole('textbox', { name: /username/i }), 'testuser');
     await userEvent.type(screen.getByTestId('password-input'), 'Password123!');
 
     fireEvent.click(screen.getByRole('button', { name: /login/i }));
@@ -93,7 +93,7 @@ describe('LoginForm Integration', () => {
 
     render(<ReduxProvider><LoginForm /></ReduxProvider>);
 
-    await userEvent.type(screen.getByRole('textbox', { name: /email address/i }), 'test@example.com');
+    await userEvent.type(screen.getByRole('textbox', { name: /username/i }), 'testuser');
     await userEvent.type(screen.getByTestId('password-input'), 'wrongpassword');
 
     fireEvent.click(screen.getByRole('button', { name: /login/i }));
@@ -115,7 +115,7 @@ describe('LoginForm Integration', () => {
 
     render(<ReduxProvider><LoginForm /></ReduxProvider>);
 
-    await userEvent.type(screen.getByRole('textbox', { name: /email address/i }), 'test@example.com');
+    await userEvent.type(screen.getByRole('textbox', { name: /username/i }), 'testuser');
     await userEvent.type(screen.getByTestId('password-input'), 'Password123!');
 
     fireEvent.click(screen.getByRole('button', { name: /login/i }));

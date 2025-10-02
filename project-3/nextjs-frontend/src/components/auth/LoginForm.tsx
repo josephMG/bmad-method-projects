@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/store/auth/authApi";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -35,7 +35,7 @@ export default function LoginForm() {
     setSuccessMessage(null);
     setErrorMessage(null);
     await loginUser({
-      email: data.email,
+      username: data.username,
       password: data.password,
     });
   };
@@ -88,15 +88,15 @@ export default function LoginForm() {
         margin="normal"
         required
         fullWidth
-        id="email"
-        label="Email Address"
-        autoComplete="email"
-        // autoFocus // Removed to prevent hydration mismatch with data-shrink attribute
-        aria-label="Email Address"
-        {...register("email")}
-        error={!!errors.email}
-        helperText={errors.email?.message}
+        id="username"
+        label="Username"
+        autoComplete="username"
+        aria-label="Username"
+        {...register("username")}
+        error={!!errors.username}
+        helperText={errors.username?.message}
         disabled={isLoading}
+        inputProps={{ "data-testid": "username" }}
       />
       <TextField
         margin="normal"

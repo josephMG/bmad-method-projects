@@ -33,7 +33,7 @@ vi.mock('@/store/user/userSlice', () => ({
 const handlers = [
   http.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/me`, () => {
     return HttpResponse.json({
-      id: '123',
+      id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
       email: 'test@example.com',
       username: 'testuser',
       full_name: 'Test User',
@@ -45,7 +45,7 @@ const handlers = [
   http.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/me`, async ({ request }) => {
     const data = await request.json();
     return HttpResponse.json({
-      id: '123',
+      id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
       email: data.email || 'test@example.com',
       username: 'testuser',
       full_name: data.full_name || 'Test User',
@@ -69,7 +69,7 @@ describe('ProfilePage Integration', () => {
   it('fetches and displays user profile data', async () => {
     mockGetUserProfileQuery.mockReturnValue({
       data: {
-        id: '123',
+        id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
         email: 'test@example.com',
         username: 'testuser',
         full_name: 'Test User',
@@ -91,7 +91,7 @@ describe('ProfilePage Integration', () => {
   it('updates user profile data and displays success message', async () => {
     mockGetUserProfileQuery.mockReturnValue({
       data: {
-        id: '123',
+        id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
         email: 'test@example.com',
         username: 'testuser',
         full_name: 'Test User',
@@ -106,7 +106,7 @@ describe('ProfilePage Integration', () => {
     mockUpdateUserProfileMutation.mockImplementation((data) => {
       return Promise.resolve({
         data: {
-          id: '123',
+          id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
           email: data.email || 'test@example.com',
           username: 'testuser',
           full_name: data.full_name || 'Test User',
@@ -142,7 +142,7 @@ describe('ProfilePage Integration', () => {
   it('displays error message on update failure', async () => {
     mockGetUserProfileQuery.mockReturnValue({
       data: {
-        id: '123',
+        id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef',
         email: 'test@example.com',
         username: 'testuser',
         full_name: 'Test User',
