@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Box, Container, Typography, Snackbar, Alert } from "@mui/material";
 import DeleteAccountForm from "@/components/auth/DeleteAccountForm";

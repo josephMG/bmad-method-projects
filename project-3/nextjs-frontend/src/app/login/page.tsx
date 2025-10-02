@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Box, Typography, Container } from "@mui/material";
+import { Box, Typography, Container, Link as MuiLink } from "@mui/material";
+import Link from "next/link";
 import LoginForm from "@/components/auth/LoginForm";
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
 
@@ -23,6 +24,11 @@ export default function LoginPage() {
           Login
         </Typography>
         <LoginForm />
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body2">
+            Don't have an account? <MuiLink component={Link} href="/register" variant="body2">Sign Up</MuiLink>
+          </Typography>
+        </Box>
       </Box>
     </Container>
   );

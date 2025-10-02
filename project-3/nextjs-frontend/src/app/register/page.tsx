@@ -1,6 +1,7 @@
 
 import RegistrationForm from '@/components/auth/RegistrationForm';
-import { Box, Typography, Container } from '@mui/material';
+import { Box, Typography, Container, Link as MuiLink } from "@mui/material";
+import Link from "next/link";
 
 export default function RegisterPage() {
   return (
@@ -17,6 +18,11 @@ export default function RegisterPage() {
           Register
         </Typography>
         <RegistrationForm />
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body2">
+            Already have an account? <MuiLink component={Link} href="/login" variant="body2">Login</MuiLink>
+          </Typography>
+        </Box>
       </Box>
     </Container>
   );
