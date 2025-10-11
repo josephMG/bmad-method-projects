@@ -1,2 +1,6 @@
 **/.bmad-*/
 **/.gemini/
+
+google-services.json
+GoogleService-Info.plist
+.DS_Store
