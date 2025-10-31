@@ -30,6 +30,12 @@ This document outlines the coding standards and best practices for the `BMad-Fam
     *   Adhere to **Material 3 Design** guidelines for a consistent and modern look and feel.
     *   Ensure responsiveness across different screen sizes and orientations.
     *   Provide clear visual feedback for user interactions.
+    *   **UI/UX for Synchronization Feedback:**
+        *   **Loading Indicators:** Use subtle, non-blocking loading indicators (e.g., small spinners, progress bars) to show that data is being fetched or processed. Avoid full-screen blockers unless absolutely necessary.
+        *   **Contextual Messages:** Display clear, concise messages like "Syncing...", "Loading data...", or "Refreshing..." near the affected UI elements.
+        *   **Success Feedback:** Provide brief, temporary visual cues for successful synchronization (e.g., a checkmark icon, a toast message "Data synced!") that fade away after a few seconds.
+        *   **Error Feedback:** For sync failures, display user-friendly, actionable error messages that explain what went wrong and suggest next steps (e.g., "Network error, please try again.", "Failed to sync with Google Sheets.").
+        *   **Consistency:** Ensure that synchronization feedback elements (indicators, messages, placement) are consistent across the application.
 *   **State Management:**
     *   Consistently use **Riverpod** (preferred) or **Provider** for managing application state.
     *   Separate UI logic from business logic.

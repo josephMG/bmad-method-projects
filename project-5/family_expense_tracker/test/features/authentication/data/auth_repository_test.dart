@@ -1,14 +1,24 @@
+import 'package:family_expense_tracker/features/authentication/data/auth_repository.dart';
+import 'package:family_expense_tracker/main.dart';
+import 'package:family_expense_tracker/presentation/pages/authentication_page.dart';
+import 'package:family_expense_tracker/presentation/pages/expense_list_page.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:family_expense_tracker/features/authentication/data/auth_repository.dart';
 
-import 'auth_repository_test.mocks.dart';
+import '../../../mock/auth_mocks.mocks.dart';
 
 // Generate mocks for the classes we need
-@GenerateMocks([GoogleSignIn, GoogleSignInAccount, GoogleSignInAuthentication])
+@GenerateMocks([
+  AuthRepository,
+  GoogleSignIn,
+  GoogleSignInAccount,
+  GoogleSignInAuthentication
+])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -17,7 +27,7 @@ void main() {
     late MockGoogleSignIn mockGoogleSignIn;
 
     // Store for mocked secure storage values
-    final Map<String, String> _mockSecureStorageData = {};
+    final Map<String, String> mockSecureStorageData = {};
 
     // This setup mocks the platform channel for flutter_secure_storage
     setUpAll(() {
@@ -27,16 +37,16 @@ void main() {
         (MethodCall methodCall) async {
           switch (methodCall.method) {
             case 'read':
-              return _mockSecureStorageData[methodCall.arguments['key']];
+              return mockSecureStorageData[methodCall.arguments['key']];
             case 'write':
-              _mockSecureStorageData[methodCall.arguments['key']] =
+              mockSecureStorageData[methodCall.arguments['key']] =
                   methodCall.arguments['value'];
               return null;
             case 'delete':
-              _mockSecureStorageData.remove(methodCall.arguments['key']);
+              mockSecureStorageData.remove(methodCall.arguments['key']);
               return null;
             case 'deleteAll':
-              _mockSecureStorageData.clear();
+              mockSecureStorageData.clear();
               return null;
             default:
               return null;
@@ -50,7 +60,7 @@ void main() {
       authRepository = AuthRepository(
         googleSignIn: mockGoogleSignIn,
       );
-      _mockSecureStorageData.clear(); // Clear mock data for each test
+      mockSecureStorageData.clear(); // Clear mock data for each test
     });
 
     tearDownAll(() {
@@ -88,8 +98,8 @@ void main() {
         expect(user!.email, 'test@example.com');
 
         // Verify tokens were written to secure storage
-        expect(_mockSecureStorageData['access_token'], 'test_access_token');
-        expect(_mockSecureStorageData['id_token'], 'test_id_token');
+        expect(mockSecureStorageData['access_token'], 'test_access_token');
+        expect(mockSecureStorageData['id_token'], 'test_id_token');
       });
 
       test('should return null if sign-in is cancelled', () async {
@@ -102,7 +112,7 @@ void main() {
     group('getAccessToken', () {
       test('should return stored access token if user is not signed in', () async {
         when(mockGoogleSignIn.currentUser).thenReturn(null);
-        _mockSecureStorageData['access_token'] = 'stored_access_token';
+        mockSecureStorageData['access_token'] = 'stored_access_token';
 
         final token = await authRepository.getAccessToken();
 
@@ -121,22 +131,22 @@ void main() {
         final token = await authRepository.getAccessToken();
 
         expect(token, 'new_access_token');
-        expect(_mockSecureStorageData['access_token'], 'new_access_token');
+        expect(mockSecureStorageData['access_token'], 'new_access_token');
       });
     });
 
     group('signOut', () {
       test('should sign out and clear stored tokens', () async {
-        _mockSecureStorageData['access_token'] = 'some_token';
-        _mockSecureStorageData['id_token'] = 'some_id_token';
+        mockSecureStorageData['access_token'] = 'some_token';
+        mockSecureStorageData['id_token'] = 'some_id_token';
 
         when(mockGoogleSignIn.signOut()).thenAnswer((_) async => null);
 
         await authRepository.signOut();
 
         verify(mockGoogleSignIn.signOut()).called(1);
-        expect(_mockSecureStorageData.containsKey('access_token'), isFalse);
-        expect(_mockSecureStorageData.containsKey('id_token'), isFalse);
+        expect(mockSecureStorageData.containsKey('access_token'), isFalse);
+        expect(mockSecureStorageData.containsKey('id_token'), isFalse);
       });
     });
 
@@ -163,6 +173,89 @@ void main() {
 
         expect(user, isNull);
       });
+    });
+  });
+
+  group('AuthenticationPage Widget Tests', () {
+    // Use the generated mock class
+    late MockAuthRepository mockAuthRepository;
+    late MockGoogleSignIn mockGoogleSignIn;
+
+    setUp(() {
+      mockAuthRepository = MockAuthRepository();
+      mockGoogleSignIn = MockGoogleSignIn();
+      when(mockAuthRepository.getGoogleSignInInstance()).thenAnswer((_) => mockGoogleSignIn);
+      when(mockGoogleSignIn.signOut()).thenAnswer((_) async => null);
+      when(mockGoogleSignIn.onCurrentUserChanged).thenAnswer((_) => Stream.value(null));
+    });
+
+    testWidgets('Shows Sign In button when user is null', (WidgetTester tester) async {
+      // ARRANGE
+      when(mockAuthRepository.getCurrentUser()).thenAnswer((_) async => null);
+
+      // ACT
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ],
+          child: const MyApp(),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // ASSERT
+      expect(find.text('Sign in with Google'), findsOneWidget);
+      expect(find.text('Sign Out'), findsNothing);
+    });
+
+    testWidgets('Navigates to ExpenseListPage after sign-in and allows sign-out', (WidgetTester tester) async {
+      final mockUser = User(id: '123', email: 'test@test.com', displayName: 'Test User');
+      // ARRANGE: Initially, no user is signed in
+      when(mockAuthRepository.getCurrentUser()).thenAnswer((_) async => null);
+      when(mockAuthRepository.signInWithGoogle()).thenAnswer((_) async {
+        // Simulate successful sign-in by changing the current user
+        when(mockAuthRepository.getCurrentUser()).thenAnswer((_) async => mockUser);
+        return mockUser;
+      });
+
+      // ACT: Pump the widget
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ],
+          child: const MyApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // ASSERT: AuthenticationPage should be shown with Sign In button
+      expect(find.byType(AuthenticationPage), findsOneWidget);
+      expect(find.text('Sign in with Google'), findsOneWidget);
+      expect(find.byType(ExpenseListPage), findsNothing);
+
+      // ACT: Tap Sign In button
+      await tester.tap(find.byKey(const Key('signInButton')));
+      await tester.pumpAndSettle(); // Wait for sign-in and navigation
+
+      // ASSERT: Should navigate to ExpenseListPage
+      expect(find.byType(ExpenseListPage), findsOneWidget);
+      expect(find.byType(AuthenticationPage), findsNothing);
+
+      // ARRANGE: Mock sign-out
+      when(mockAuthRepository.signOut()).thenAnswer((_) async => Future.value(null));
+      when(mockAuthRepository.getCurrentUser()).thenAnswer((_) async => null); // After sign-out, user is null
+
+      // ACT: Tap Sign Out button on ExpenseListPage
+      await tester.tap(find.byKey(const Key('logoutButton')));
+      await tester.pumpAndSettle(); // Wait for logout action and navigation back to AuthenticationPage
+
+      // ASSERT: Should navigate back to AuthenticationPage and show Sign In button
+      expect(find.byType(AuthenticationPage), findsOneWidget);
+      expect(find.text('Sign in with Google'), findsOneWidget);
+      expect(find.byType(ExpenseListPage), findsNothing);
     });
   });
 }

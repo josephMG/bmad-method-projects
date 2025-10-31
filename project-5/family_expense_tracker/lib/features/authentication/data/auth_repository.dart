@@ -1,5 +1,6 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Represents an authenticated user.
 class User {
@@ -101,6 +102,9 @@ class AuthRepository {
     await _secureStorage.delete(key: 'id_token');
   }
 
+  /// Exposes the GoogleSignIn instance.
+  GoogleSignIn getGoogleSignInInstance() => _googleSignIn;
+
   /// Checks if a user is currently signed in.
   Future<bool> isSignedIn() async {
     final bool signedIn = await _googleSignIn.isSignedIn();
@@ -133,3 +137,7 @@ class AuthRepository {
     );
   }
 }
+
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepository();
+});

@@ -5,9 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:google_sign_in/google_sign_in.dart' as _i2;
-import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart'
+import 'package:family_expense_tracker/features/authentication/data/auth_repository.dart'
     as _i3;
+import 'package:google_sign_in/google_sign_in.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
 
@@ -26,10 +26,76 @@ import 'package:mockito/src/dummies.dart' as _i5;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeGoogleSignInAuthentication_0 extends _i1.SmartFake
-    implements _i2.GoogleSignInAuthentication {
-  _FakeGoogleSignInAuthentication_0(Object parent, Invocation parentInvocation)
+class _FakeGoogleSignIn_0 extends _i1.SmartFake implements _i2.GoogleSignIn {
+  _FakeGoogleSignIn_0(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
+}
+
+class _FakeGoogleSignInAuthentication_1 extends _i1.SmartFake
+    implements _i2.GoogleSignInAuthentication {
+  _FakeGoogleSignInAuthentication_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+/// A class which mocks [AuthRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
+  MockAuthRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i3.User?> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue: _i4.Future<_i3.User?>.value(),
+          )
+          as _i4.Future<_i3.User?>);
+
+  @override
+  _i4.Future<String?> getAccessToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAccessToken, []),
+            returnValue: _i4.Future<String?>.value(),
+          )
+          as _i4.Future<String?>);
+
+  @override
+  _i4.Future<void> signOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOut, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i2.GoogleSignIn getGoogleSignInInstance() =>
+      (super.noSuchMethod(
+            Invocation.method(#getGoogleSignInInstance, []),
+            returnValue: _FakeGoogleSignIn_0(
+              this,
+              Invocation.method(#getGoogleSignInInstance, []),
+            ),
+          )
+          as _i2.GoogleSignIn);
+
+  @override
+  _i4.Future<bool> isSignedIn() =>
+      (super.noSuchMethod(
+            Invocation.method(#isSignedIn, []),
+            returnValue: _i4.Future<bool>.value(false),
+          )
+          as _i4.Future<bool>);
+
+  @override
+  _i4.Future<_i3.User?> getCurrentUser() =>
+      (super.noSuchMethod(
+            Invocation.method(#getCurrentUser, []),
+            returnValue: _i4.Future<_i3.User?>.value(),
+          )
+          as _i4.Future<_i3.User?>);
 }
 
 /// A class which mocks [GoogleSignIn].
@@ -41,12 +107,12 @@ class MockGoogleSignIn extends _i1.Mock implements _i2.GoogleSignIn {
   }
 
   @override
-  _i3.SignInOption get signInOption =>
+  _i2.SignInOption get signInOption =>
       (super.noSuchMethod(
             Invocation.getter(#signInOption),
-            returnValue: _i3.SignInOption.standard,
+            returnValue: _i2.SignInOption.standard,
           )
-          as _i3.SignInOption);
+          as _i2.SignInOption);
 
   @override
   List<String> get scopes =>
@@ -173,7 +239,7 @@ class MockGoogleSignInAccount extends _i1.Mock
       (super.noSuchMethod(
             Invocation.getter(#authentication),
             returnValue: _i4.Future<_i2.GoogleSignInAuthentication>.value(
-              _FakeGoogleSignInAuthentication_0(
+              _FakeGoogleSignInAuthentication_1(
                 this,
                 Invocation.getter(#authentication),
               ),

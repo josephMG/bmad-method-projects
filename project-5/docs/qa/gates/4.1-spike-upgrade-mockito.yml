@@ -1,0 +1,43 @@
+schema: 1
+story: '4.1'
+story_title: 'Story: Technical Spike - Upgrade Mockito and Build Runner'
+gate: PASS
+status_reason: 'The technical spike successfully upgraded mockito and build_runner, resolving the persistent testing framework issues and enabling proper unit testing.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-10-12T00:00:00Z'
+
+top_issues: []
+
+waiver: { active: false }
+
+quality_score: 100
+expires: '2025-10-26T00:00:00Z'
+
+evidence:
+  tests_reviewed: 0
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'Not applicable to this technical spike.'
+  performance:
+    status: PASS
+    notes: 'Not applicable to this technical spike.'
+  reliability:
+    status: PASS
+    notes: 'Improved by resolving testing blockers and enabling proper unit testing.'
+  maintainability:
+    status: PASS
+    notes: 'Improved by resolving testing blockers and enabling proper unit testing.'
+
+recommendations:
+  immediate:
+    - action: 'Remove the temporarily re-introduced deleteExpense unit test from google_sheets_expense_datasource_test.dart as it belongs in Story 5.'
+      refs: ['family_expense_tracker/test/data/datasources/google_sheets_expense_datasource_test.dart']
+  future:
+    - action: 'Proceed with Story 5: Implement Delete Expense Functionality, now that the testing environment is stable.'
+      refs: ['docs/stories/5-feature-delete-expense.md']

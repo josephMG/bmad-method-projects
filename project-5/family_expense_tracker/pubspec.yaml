@@ -41,12 +41,19 @@ dependencies:
   googleapis: ^13.0.0
   http: ^1.2.1
   provider: ^6.1.2
+  uuid: ^4.4.0
+  connectivity_plus: ^6.0.1
+
+  logging: ^1.2.0
+  meta: ^1.12.0
+  intl: ^0.20.2
+  flutter_colorpicker: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.4
-  build_runner: ^2.4.10
+  mockito: ^5.5.1
+  build_runner: ^2.9.0
   integration_test:
     sdk: flutter
 
@@ -55,7 +62,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

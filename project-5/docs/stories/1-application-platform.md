@@ -1,4 +1,6 @@
-# Story: Application Platform
+---
+story_id: 1
+---
 
 ## Status
 Done

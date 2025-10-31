@@ -34,7 +34,7 @@ The `BMad-FamilyExpenseTracker` is a cross-platform Flutter application designed
     *   **Dependencies:** Google Sheets API for reading category data.
     *   **Missing Requirements:**
         *   **Category Validation:** The app should handle cases where `CategoryName` is missing or `ColorCode` is invalid.
-        *   **Referential Integrity:** Define behavior when a category used in existing expenses is deleted. Options include: preventing deletion, marking expenses with a "deleted category" placeholder, or reassigning to a default category.
+        *   **Referential Integrity:** Behavior when a category used in existing expenses is deleted is now handled by Story 9.1. The application prevents deletion of categories in use and provides an option to reassign existing expenses to another category before deletion.
         *   **In-app Category Management:** While the spec mentions managing categories in Google Sheets, allowing users to add/edit/delete categories directly within the app would significantly enhance usability. This could then write back to Google Sheets.
 
 #### 2.3 Monthly Data Structure
@@ -133,7 +133,7 @@ The `BMad-FamilyExpenseTracker` is a cross-platform Flutter application designed
     *   Use a dedicated Flutter package for Google Sheets API interaction (e.g., `googleapis_auth`, `googleapis`).
     *   **Challenges:**
         *   **Authentication:** Implementing Google OAuth securely for mobile applications.
-        *   **API Rate Limits:** Google Sheets API has rate limits. Design the app to minimize API calls, especially for frequent operations. Caching will be crucial.
+        *   **API Rate Limits:** Google Sheets API has rate limits (e.g., 100 requests per 100 seconds per user, 500 requests per 100 seconds per project). Design the app to minimize API calls, especially for frequent operations. Implement client-side caching for frequently accessed data (e.g., categories, current month's expenses) and a retry mechanism with exponential backoff for rate-limited requests. Display user-friendly messages when rate limits are encountered.
         *   **Data Structure Mapping:** Mapping Google Sheets row data to Flutter data models and vice-versa.
         *   **Real-time Sync:** True real-time sync (push notifications from Google Sheets) is not directly supported by the Sheets API. A polling mechanism or manual refresh will be necessary for the initial version.
         *   **Unique Row Identification:** As noted in functional requirements, Google Sheets lacks stable row IDs. A custom ID column will be needed.

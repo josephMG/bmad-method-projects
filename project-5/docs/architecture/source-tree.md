@@ -35,43 +35,79 @@ lib/
 ├── core/                # Core utilities, constants, extensions, base classes
 │   ├── constants/       # Application-wide constants
 │   ├── errors/          # Custom error classes and exception handling
-│   ├── extensions/      # Dart/Flutter extensions
 │   ├── utils/           # General utility functions
 │   └── widgets/         # Reusable generic widgets
 ├── data/                # Data layer: repositories, data sources, models
 │   ├── models/          # Data models (e.g., Expense, Category)
 │   ├── repositories/    # Abstract interfaces for data operations
+│   │   ├── category_repository.dart
+│   │   └── expense_repository.dart
 │   └── datasources/     # Implementations of data sources (e.g., GoogleSheetsApiDataSource)
-├── domain/              # Business logic: use cases, entities
-│   ├── entities/        # Core business objects
-│   └── usecases/        # Application-specific business rules
+│       ├── google_sheets_category_datasource.dart
+│       └── google_sheets_expense_datasource.dart
 ├── features/            # Feature-driven organization (e.g., authentication, expenses, categories)
 │   ├── authentication/  # Google OAuth integration, user management
-│   │   ├── data/
-│   │   ├── domain/
-│   │   └── presentation/
-│   ├── expenses/        # Expense listing, adding, editing, deleting
-│   │   ├── data/
-│   │   ├── domain/
-│   │   └── presentation/
-│   └── categories/      # Category management
-│       ├── data/
-│       ├── domain/
-│       └── presentation/
+│   │   └── data/
+│   │       └── auth_repository.dart        # Concrete implementation of AuthRepository
+│   └── expenses/        # Expense listing, adding, editing, deleting
+│       └── data/
+│           # expense_repository.dart was moved/deleted
 ├── presentation/        # UI layer: widgets, pages, state management
 │   ├── pages/           # Top-level screens/pages
+│   │   ├── authentication_page.dart
+│   │   └── expense_list_page.dart
 │   ├── widgets/         # Reusable UI components specific to features
+│   │   ├── category_list.dart
+│   │   ├── expense_form_dialog.dart
+│   │   └── expense_list.dart
 │   └── providers/       # Riverpod/Provider definitions for global state
-└── services/            # External services (e.g., Google Sheets API client, notification service)
-    ├── google_sheets_service.dart
-    └── auth_service.dart
+│       ├── category_provider.dart
+│       ├── expense_provider.dart
+│       └── month_provider.dart
+└── services/            # External services (e.g., Google Sheets API client)
+    └── google_sheets_service.dart
 ```
 
 ## 3. Testing Directory (`test/`)
 
-*   **Unit Tests:** Located in `test/unit/` or alongside the code they test (e.g., `lib/data/models/expense_test.dart`).
-*   **Widget Tests:** Located in `test/widget/` or within the `presentation` layer's `test` subfolder.
-*   **Integration Tests:** Located in `test/integration/`.
+The `test/` directory mirrors the `lib/` structure for unit and widget tests, with a dedicated `mock/` subdirectory for generated mock files.
+
+```
+test/
+├── data/
+│   ├── datasources/
+│   │   ├── google_sheets_category_datasource_test.dart
+│   │   ├── google_sheets_expense_datasource_delete_test.dart
+│   │   └── google_sheets_expense_datasource_test.dart
+│   └── models/
+│       ├── category_test.dart
+│       └── expense_record_test.dart
+├── features/
+│   └── authentication/
+│       └── data/
+│           └── auth_repository_test.dart
+├── integration/
+│   └── google_auth_integration_test.dart
+├── mock/                # Centralized generated mock files
+│   ├── auth_mocks.dart
+│   ├── auth_mocks.mocks.dart
+│   ├── expense_mocks.dart
+│   ├── expense_mocks.mocks.dart
+│   ├── google_sheets_service_mocks.dart
+│   └── google_sheets_service_mocks.mocks.dart
+├── presentation/
+│   ├── pages/
+│   │   ├── authentication_page_test.dart
+│   │   └── expense_list_page_test.dart
+│   ├── providers/
+│   │   ├── category_provider_test.dart
+│   │   └── month_provider_test.dart
+│   └── widgets/
+│       ├── category_list_test.dart
+│       └── expense_form_test.dart
+├── services/
+│   └── google_sheets_service_test.dart
+```
 
 ## 4. Assets (`assets/`)
 

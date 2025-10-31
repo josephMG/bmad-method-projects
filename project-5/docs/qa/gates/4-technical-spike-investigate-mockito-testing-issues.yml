@@ -1,0 +1,43 @@
+schema: 1
+story: '4'
+story_title: 'Story: Technical Spike - Investigate Mockito Testing Issues'
+gate: PASS
+status_reason: 'The technical spike successfully investigated the mockito testing framework issues, identified the root cause, and provided clear recommendations for resolution.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-10-12T00:00:00Z'
+
+top_issues: []
+
+waiver: { active: false }
+
+quality_score: 100
+expires: '2025-10-26T00:00:00Z'
+
+evidence:
+  tests_reviewed: 0
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'Not applicable to this technical spike.'
+  performance:
+    status: PASS
+    notes: 'Not applicable to this technical spike.'
+  reliability:
+    status: PASS
+    notes: 'The spike contributes to improved reliability by addressing testing blockers.'
+  maintainability:
+    status: PASS
+    notes: 'The spike contributes to improved maintainability by addressing testing blockers.'
+
+recommendations:
+  immediate:
+    - action: 'Create a new spike story to upgrade mockito and build_runner to their latest versions.'
+      refs: []
+  future:
+    - action: 'Revisit the deleteExpense feature story (Story 17) once the testing environment is stable after the upgrade spike.'
+      refs: []

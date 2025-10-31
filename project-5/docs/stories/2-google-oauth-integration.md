@@ -1,4 +1,6 @@
-# Story: Google OAuth Integration
+---
+story_id: 2
+---
 
 ## Status
 

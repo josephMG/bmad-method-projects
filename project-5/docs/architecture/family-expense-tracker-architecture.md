@@ -64,12 +64,12 @@ The Flutter application is structured into several logical layers to ensure modu
     *   **Providers:** Define how different parts of the application can access and react to changes in state.
 
 *   **Data Layer (Repository Pattern):**
+    *   **`AuthRepository`:** An abstract interface defining authentication operations (e.g., `signInWithGoogle`, `signOut`, `getCurrentUser`). Its concrete implementation handles Google OAuth.
     *   **`ExpenseRepository`:** An abstract interface defining CRUD operations for expense records (e.g., `getExpensesForMonth`, `addExpense`, `updateExpense`, `deleteExpense`).
     *   **`CategoryRepository`:** An abstract interface defining operations for categories (e.g., `getCategories`).
     *   **Implementations:** Concrete implementations (e.g., `GoogleSheetsExpenseRepository`, `GoogleSheetsCategoryRepository`) interact with the `GoogleSheetsService` to perform actual API calls. This abstraction allows for easy swapping of the backend in the future.
 
 *   **Service Layer:**
-    *   **`AuthService`:** Manages Google OAuth authentication, including sign-in, sign-out, and secure handling/refreshing of access tokens.
     *   **`GoogleSheetsService`:** A low-level service responsible for direct interaction with the Google Sheets API. It handles:
         *   Making HTTP requests to the Google Sheets API.
         *   Parsing API responses into raw data structures.
